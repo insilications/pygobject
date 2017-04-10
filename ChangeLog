@@ -1,3 +1,35 @@
+commit 48fb00980464c95f69579688c5390cf0560c4f04
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Mon Mar 20 18:11:21 2017 +0100
+
+    pygi-info: initialize GIArgument before passing it to
+    g_constant_info_get_value
+
+    Co-Authored-By: Mikhail Fludkov <misha@pexip.com>
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=772949
+
+ gi/pygi-info.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit e0c036d84ee66530498ec71e5388eaf23df2eb95
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Mon Mar 20 16:10:12 2017 +0100
+
+    configure.ac: post-release version bump to 3.24.1
+
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 9d76190bc7a256764b1af5ec4bd05ce4a7b6e1d2
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Mon Mar 20 14:28:51 2017 +0100
+
+    release 3.24.0
+
+ NEWS | 3 +++
+ 1 file changed, 3 insertions(+)
+
 commit bffbb4b1f823de5035e51e013dc6da5a973045aa
 Author: Christoph Reiter <creiter@src.gnome.org>
 Date:   Mon Mar 20 14:23:59 2017 +0100
