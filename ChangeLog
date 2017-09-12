@@ -1,4 +1,959 @@
-commit 48fb00980464c95f69579688c5390cf0560c4f04
+commit 9580b2f1e447cea2d50f8ab83a715b29e4e862e6
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Tue Sep 12 08:25:25 2017 +0200
+
+    configure.ac: pre-release version bump to 3.26.0
+
+ configure.ac | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit a541a916ce798cd779ed17f015f6902e66c4454c
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Fri Aug 25 18:21:47 2017 +0200
+
+    closure: silence a new compiler warning
+
+    gcc7 has started to warn for fallthrough in switch. Prevent this
+    by duplicating the default case + break.
+
+ gi/pygi-closure.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit c0e42240cd72c012a740f26dc3fb0eef98328110
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Fri Aug 25 18:17:33 2017 +0200
+
+    tests: skip some failing test under Windows with Python 3.6
+
+    Python 3.6 has changed the default filesystem encoding on Windows
+    from mbcs to utf-8. Some tests assume mbcs, so skip them for now.
+
+ tests/test_gi.py | 24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
+
+commit 0fe781efdd46386f7c373b6073d30411025e2854
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Tue Aug 22 13:02:43 2017 +0200
+
+    tests: pyflakes/pep8 fixes
+
+    Make Python 3 pyflakes work by adding Python 2 builtins
+    through PYFLAKES_BUILTINS.
+
+ Makefile.am                    | 4 ++--
+ tests/test_import_machinery.py | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+commit 20430e87c66b03ac05fbab8283a3771ce8364ad8
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Fri Jun 9 13:13:57 2017 +0200
+
+    tests: Fix cairo test with pycairo >= 1.13
+
+    All pycairo functions now return an enum value which type is an int
+    subclass. Remove the overly strict check for the return value type.
+
+ tests/test_cairo.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 9cbf370d0034bffa60be67f6d47eee94e4045c18
+Author: Benjamin Berg <bberg@redhat.com>
+Date:   Fri Apr 21 13:35:05 2017 +0200
+
+    Make sure version information passed to require_version is a string.
+
+    This simply makes it easier for someone to find an error in cases
+    where
+    a floating point is passed by accident.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=781582
+
+ gi/__init__.py                 |  7 +++++++
+ tests/test_import_machinery.py | 12 ++++++++++++
+ 2 files changed, 19 insertions(+)
+
+commit 5e2bb06086c6bfa2bcb1a47f4c963d336630d12e
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Sat Apr 22 15:56:37 2017 +0200
+
+    configure.ac: post-release version bump to 3.25.2
+
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 31d7e92a24400a5d03f05912fdd8fd625082a837
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Fri Apr 21 18:30:12 2017 +0200
+
+    release 3.25.1
+
+ NEWS         | 59
+ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ configure.ac |  2 +-
+ 2 files changed, 60 insertions(+), 1 deletion(-)
+
+commit fc451f235754a98c647972f0a03e11eaefca4cef
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Wed Apr 19 15:04:30 2017 +0200
+
+    Bump pycairo requirement to 1.11.1
+
+    This requires pycairo from https://pycairo.readthedocs.io/en/latest/
+    (already updated/included in JHBuild)
+
+    For more info on the upstream change see:
+        https://lists.cairographics.org/archives/cairo/2017-April/027919.html
+        https://mail.gnome.org/archives/desktop-devel-list/2017-April/msg00065.html
+
+    This will enable cairo.Region support for all setups and Python
+    versions as well
+    as make moving to Python 3 easier for applications since all APIs
+    provided
+    under Python 2 are available there as well now.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=707196
+
+ configure.ac | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+commit 36e786e1a2305c001c8c067adfee9d731c2ec0fb
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Thu Apr 20 09:43:50 2017 +0200
+
+    configure.ac: Always disable -Werror
+
+    Instead of disabling it for release builds do it always.
+    While JHBuild uses --disable-Werror by default, gnome-continuous
+    does not.
+
+    See
+    https://mail.gnome.org/archives/desktop-devel-list/2017-April/msg00009.html
+
+ configure.ac | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+commit a2cb674334267e3eaeac5b2ce849c4a38cc1b428
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Sun Apr 9 18:48:33 2017 +0200
+
+    foreign-cairo: Enable cairo.Region support also on Python 2 if
+    available
+
+    The next pycairo version might add support for cairo_region_t.
+    This enables the converter functions also on Python 2 and makes
+    sure that the test suite does not crash in case it does.
+
+ gi/pygi-foreign-cairo.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 3460081ed20b33b3a08c4fce5de135f1171f2ff0
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Sun Apr 2 15:51:25 2017 +0200
+
+    configure.ac: remove unused PLATFORM variable
+
+    This was added in 93e7d047e
+
+ configure.ac | 3 ---
+ 1 file changed, 3 deletions(-)
+
+commit 810392173ce20f8a7935966b46df483742e73f23
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Sun Apr 2 15:25:56 2017 +0200
+
+    configure.ac: Remove unused PySignal_SetWakeupFd check
+
+    HAVE_PYSIGNAL_SETWAKEUPFD isn't used anywhere
+
+ configure.ac | 12 ------------
+ 1 file changed, 12 deletions(-)
+
+commit 52693463749f045355a7ddeace033d369fe2e786
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Sun Apr 2 14:13:08 2017 +0200
+
+    tests: remove python 2.5/3.2 compat code
+
+    2.7/3.3 support the u/b prefixes and both have callable()
+
+ gi/overrides/Gtk.py         |  4 +---
+ tests/compathelper.py       | 40 ----------------------------------------
+ tests/helper.py             |  2 +-
+ tests/test_fields.py        |  6 ++----
+ tests/test_gi.py            | 26 +++++++++-----------------
+ tests/test_glib.py          | 12 +++++-------
+ tests/test_iochannel.py     | 21 +++++++++------------
+ tests/test_mainloop.py      |  4 +---
+ tests/test_overrides_gtk.py | 13 ++++++-------
+ tests/test_properties.py    | 29 ++++++++++++-----------------
+ 10 files changed, 46 insertions(+), 111 deletions(-)
+
+commit 1039e9a512d1df35e9c4656b0b41c1e4a25aafad
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Sun Apr 2 14:04:39 2017 +0200
+
+    configure.ac: Require Python 3.3
+
+    At the time of the next release nothing will support 3.2 anymore.
+
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit e98558a6843b68115d68d3bc92dad271b74ef6d0
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Sun Apr 2 13:22:32 2017 +0200
+
+    tests: Make test suite run with GTK+ 4
+
+    Skip various tests which test things that are no longer available
+    with gtk4.
+    Does not remove any deprecated overrides.
+
+    Disable gtk4 support in pygtkcompat. The porting path over gtk3
+    should be enough.
+
+ gi/overrides/Gdk.py         |   3 ++
+ pygtkcompat/pygtkcompat.py  |   3 ++
+ tests/compat_test_pygtk.py  |   4 +-
+ tests/test_atoms.py         |   1 +
+ tests/test_overrides_gdk.py |   7 +++
+ tests/test_overrides_gtk.py | 107
+ +++++++++++++++++++++++++++++++++-----------
+ 6 files changed, 98 insertions(+), 27 deletions(-)
+
+commit c3159accf3faa2bd804ac22ec7ac93e62b158a3e
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Sun Apr 2 13:17:36 2017 +0200
+
+    tests: always call require_version; add TEST_GTK_VERSION env var
+
+    Set the versions in runtests.py instead of repeating it in every
+    test module.
+
+    Add a new TEST_GTK_VERSION env var which defaults to "3.0".
+    Allows to run tests with gtk4 using "make check TEST_GTK_VERSION=4.0"
+
+ tests/compat_test_pygtk.py    |  6 ------
+ tests/runtests.py             | 26 ++++++++++++++++++++++++++
+ tests/test_atoms.py           |  7 +++----
+ tests/test_overrides_gtk.py   |  8 +++-----
+ tests/test_overrides_pango.py |  7 +------
+ tests/test_properties.py      |  6 +-----
+ tests/test_repository.py      |  4 ----
+ 7 files changed, 34 insertions(+), 30 deletions(-)
+
+commit c89fa35814103a4ceefece8e305af4f9e0dd6a37
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Sun Apr 2 10:57:34 2017 +0200
+
+    tests: Fix make check.valgrind
+
+    Got broken when we changed to use dbus-run-session. Move
+    valgrind related env vars before the dbus launcher helper.
+
+    This also tries to improve the lookup of the suppression file.
+    Instead of relying on the basename of the python binary use the python
+    major version to select one of two suppression files in the repo.
+
+    Add PYTHONMALLOC=malloc when running under valgrind, which makes
+    Python
+    use malloc instead of its own allocator. Only works with Python 3.6+.
+
+ configure.ac                           |   5 +-
+ tests/Makefile.am                      |  22 +-
+ tests/{python2.7.supp => python2.supp} |   0
+ tests/python3.3dm.supp                 | 471
+ ---------------------------------
+ tests/{python3.3.supp => python3.supp} |   0
+ 5 files changed, 14 insertions(+), 484 deletions(-)
+
+commit 7c774ce5ce9ec5cda61e10a704b28f0b82df1b03
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Sun Apr 2 10:54:48 2017 +0200
+
+    tests: Don't skip Regress tests when cairo is missing
+
+    Since
+    https://git.gnome.org/browse/pygobject/commit/?id=a731db5908b79b97277be4f5138b46010c2dd616
+    we build libregress even if cairo is missing.
+
+    Instead of skipping regress tests when cairo is missing only skip
+    cairo relate
+    tests now.
+
+ tests/test_cairo.py            |  3 +--
+ tests/test_docstring.py        | 10 +++-------
+ tests/test_everything.py       | 17 +----------------
+ tests/test_import_machinery.py |  7 +------
+ tests/test_properties.py       | 32 +++++++++++---------------------
+ tests/test_repository.py       | 10 ----------
+ tests/test_signal.py           | 15 +--------------
+ 7 files changed, 18 insertions(+), 76 deletions(-)
+
+commit c2be3cbefbbacb52758b49338be61d093a896d09
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Sun Apr 2 10:52:41 2017 +0200
+
+    tests: fix invalid regex escaping
+
+    Python 3.6 got stricter here and raises warnings/errors for invalid
+    escape
+    sequences.
+
+ tests/helper.py  |  4 ++--
+ tests/test_gi.py | 24 ++++++++++++------------
+ 2 files changed, 14 insertions(+), 14 deletions(-)
+
+commit b7d504c3ef689a79448c9f6597ae59153a77104f
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Sat Apr 1 18:11:46 2017 +0200
+
+    tests: avoid mapping a GtkWindow
+
+    This let to a window being shown when running the test suite.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=780812
+
+ tests/test_overrides_gdk.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit a2b3d846fab3a4b660eefbe3555933afe6d9c90a
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Sat Apr 1 18:06:47 2017 +0200
+
+    tests: silence some glib deprecation warnings
+
+    These functions were deprecated in the last few cycles.
+    This hides the warnings when running the test suite.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=780812
+
+ tests/test_atoms.py         | 7 +++++--
+ tests/test_overrides_gtk.py | 6 ++++--
+ 2 files changed, 9 insertions(+), 4 deletions(-)
+
+commit ed488be1f0bcd2d2ec1acf98f27585d8577ddc5f
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Sat Apr 1 18:05:13 2017 +0200
+
+    tests: avoid deprecation warnings for
+    assertRegexpMatches/assertRaisesRegexp
+
+    Replace them with the renamed variants. We can't switch because
+    there is
+    no non-deprecated variant available under both Python 2 and 3.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=780812
+
+ tests/runtests.py | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+commit c39bf20cca3d1c6bcf89f93759772117d087b042
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Sat Apr 1 17:49:01 2017 +0200
+
+    pygi-source: clear exceptions in finalize handler
+
+    This was executed in the context of Source.__del__ and while Python
+    ignores errors there it started to warn with Python 3.
+
+    This fixes the warnings visible when running test_source under
+    Python 3.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=780812
+
+ gi/pygi-source.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+commit d806a120998e9b38e96d02ab05d28051a441db61
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Sat Apr 1 17:48:38 2017 +0200
+
+    Fix pep8 errors
+
+ gi/_option.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit b2529624b3925adbef2671025e08cbf747f162e8
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Mon Mar 27 10:14:22 2017 +0200
+
+    Remove gi._gi._gobject and gi._gobject modules
+
+    Expose everything from _gi._gobject in _gi instead.
+    This does not move any code around, just removes the module.
+
+    Also removes the gi._gobject package and replaces it
+    with a small dummy module in gi.__init__.py
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=735206
+
+ configure.ac            |  1 -
+ gi/Makefile.am          |  3 +-
+ gi/__init__.py          |  9 ++++--
+ gi/_constants.py        | 52 +++++++++++++++----------------
+ gi/_gobject/Makefile.am | 16 ----------
+ gi/_gobject/__init__.py | 23 --------------
+ gi/_propertyhelper.py   | 47 ++++++++++++++--------------
+ gi/_signalhelper.py     |  6 ++--
+ gi/gimodule.c           | 48 ++++++++++++++++++++++-------
+ gi/gobjectmodule.c      | 82
+ +++++++++++--------------------------------------
+ gi/gobjectmodule.h      | 21 +++++++++++++
+ gi/module.py            |  6 ++--
+ gi/overrides/GLib.py    |  3 +-
+ gi/overrides/GObject.py | 82
+ ++++++++++++++++++++++++-------------------------
+ gi/pygi-value.c         |  2 +-
+ gi/pygobject-object.c   | 12 ++++----
+ gi/types.py             | 13 ++++----
+ tests/helper.py         |  4 +--
+ tests/test_gi.py        |  2 +-
+ tests/test_gobject.py   |  8 ++---
+ 20 files changed, 199 insertions(+), 241 deletions(-)
+
+commit bdfafd2bdc84d961bd2df43d8dee690177c77a56
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Mon Mar 27 07:39:22 2017 +0200
+
+    Remove gi._gi._glib module
+
+    Move the code into gi._gi (gimodule)
+    The module was a leftover from
+    https://bugzilla.gnome.org/show_bug.cgi?id=712197
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=735206
+
+ gi/Makefile.am        |  1 -
+ gi/_option.py         | 12 +++++------
+ gi/gimodule.c         | 31 +++++++++++++++-------------
+ gi/glibmodule.c       | 56
+ ---------------------------------------------------
+ gi/overrides/GLib.py  | 10 ++++-----
+ gi/pygoptioncontext.c |  4 ++--
+ gi/pygoptiongroup.c   |  4 ++--
+ gi/pygspawn.c         | 14 ++++++-------
+ 8 files changed, 39 insertions(+), 93 deletions(-)
+
+commit 4ad6899bdca6fbd0fb7e88cd16b49367f7f41267
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Mon Mar 27 06:41:19 2017 +0200
+
+    GValue: add overflow checking for py -> gint; forward marshaling
+    exceptions
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=769789
+
+ gi/pygi-struct-marshal.c |  3 +--
+ gi/pygi-value.c          | 11 ++++++++++-
+ tests/test_gi.py         |  7 ++++++-
+ 3 files changed, 17 insertions(+), 4 deletions(-)
+
+commit 052cea9e2b6e599e52435df3155d8de22500e0f4
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Sun Mar 26 19:34:00 2017 +0200
+
+    pygobject_lookup_class: clear exceptions between calls and don't
+    return with one set
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=773394
+
+ gi/pygobject-object.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+commit 271e94b4e4cc9a9619015ef76880346ad7962ac4
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Sat Apr 1 10:15:00 2017 +0200
+
+    Avoid some new deprecation warnings
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=780768
+
+ gi/gobjectmodule.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+commit 81625ce4c0164dcb3409471fc38168147af4026a
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Sun Mar 26 16:23:25 2017 +0200
+
+    Raise RuntimeError in case an uninitilialized GObject.Object is
+    marshaled
+
+    One common case where this can happen is when subclassing a
+    GObject.Object
+    without chaining up __init__ and then calling a method.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=730908
+
+ gi/pygi-object.c      | 6 ++++++
+ tests/test_gobject.py | 6 ++++++
+ 2 files changed, 12 insertions(+)
+
+commit b23dea0981ab5718cb26d3a9f4f7bf8f593ac343
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Sun Mar 26 19:11:33 2017 +0200
+
+    closure: support unichar args
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=759276
+
+ gi/pygi-closure.c           |  3 +++
+ tests/test_overrides_gtk.py | 14 ++++++++++++++
+ 2 files changed, 17 insertions(+)
+
+commit d6e46f778ea2bfede89f4fe2422b80998ed7fec8
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Fri Jun 3 15:51:37 2016 +0200
+
+    Add support for bytes and non-utf-8 file names.
+
+    Py2+Unix: Convert unicode to bytes using the fsencoding. Pass bytes
+    as is.
+    Returns path as bytes as is.
+
+    Py2+Windows: Convert unicode to wtf-8. Pass bytes as is.
+    Returns path as bytes as is.
+
+    Py3+Unix: Convert str using os.fsencode so that the surrogateescape
+    handler
+    can restore the real path if the source was a Python API such as
+    os.listdir
+    sys.argv etc. Pass bytes as is. Return str decoded using os.fsdecode
+    so that
+    it can be passed to Python API such as open, os.listdir etc.
+
+    Py3+Windows: Convert str to wtf-8. Decode bytes using the fsencoding
+    first.
+    Returns str + surrogates.
+
+    This change makes anyting taking filenames on Python 3 behave the same
+    as Python functions like listdir() or open(). Compared to Python
+    3 builtin
+    functions which return the same type that was passed in we always
+    return str.
+
+    One remaining problem is that glib assumes that Windows paths
+    are utf-16,
+    while they are just 16bit arrays and as a result utf-8 is not
+    enough to
+    represent all possible paths. We use wtf-8 here instead (utf-8 with
+    lone surrogates),
+    which allows us to convert all paths, but glib functions accessing
+    the fs
+    will fail with them.
+
+    PyUnicode_EncodeFSDefault was added in CPython 3.2 so bump the
+    requirement.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=746564
+
+ configure.ac                    |   2 +-
+ gi/pygi-basictype.c             | 186
+ ++++++++++++++++++++++++++++++++--------
+ gi/pyglib-python-compat.h       |   2 +
+ tests/compathelper.py           |   4 +
+ tests/gimarshallingtestsextra.c |  14 +++
+ tests/gimarshallingtestsextra.h |   1 +
+ tests/test_gi.py                | 152 +++++++++++++++++++++++++++++++-
+ 7 files changed, 320 insertions(+), 41 deletions(-)
+
+commit 33a44c7653030da0a1de76ff8241e40e66d04701
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Mon Mar 27 15:53:13 2017 +0200
+
+    test_gi: use correct min/max constants for gsize/gssize
+
+    This made these tests on 64bit Windows fail because sizeof(gsize)
+    != sizeof(glong)
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=780591
+
+ tests/test_gi.py | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit b993e4dc73af976e8140661d2b6e9f745206808e
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Mon Mar 27 14:55:22 2017 +0200
+
+    Don't use long format string for formatting pointers
+
+    long is too small on 64bit Windows
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=780591
+
+ gi/pygpointer.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+commit d031e1700816836366989ece0eda486c77543c3b
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Mon Mar 27 14:48:08 2017 +0200
+
+    Fix conversion from pointers to hashfunc return values.
+
+    Fixes comiler warnings on 64bit Windows.
+
+    Python 3 now uses Py_hash_t as return value for hashfunc. Use
+    a compat define so we can use the right type depending on the
+    Python version.
+
+    On Python 2 + 64bit Windows the pointer doesn't fit the long
+    return type. Add a macro which handles the casting for that case
+    to prevent compiler warnings.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=780591
+
+ gi/pygboxed.c             | 4 ++--
+ gi/pyglib-python-compat.h | 6 ++++++
+ gi/pygobject-object.c     | 4 ++--
+ gi/pygparamspec.c         | 4 ++--
+ gi/pygpointer.c           | 4 ++--
+ 5 files changed, 14 insertions(+), 8 deletions(-)
+
+commit d2a7e9a7b29e74fd97592fcc8462d718d0b7af17
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Mon Mar 27 14:47:22 2017 +0200
+
+    Fix PyLong <-> GPid conversion on 64bit Windows
+
+    GPid on Windows is a pointer and not int, and pointers don't fit long
+    on 64bit so use PyLong_AsVoidPtr/PyLong_FromVoidPtr there instead.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=780591
+
+ gi/pygspawn.c | 26 +++++++++++++++++++++-----
+ 1 file changed, 21 insertions(+), 5 deletions(-)
+
+commit cfeeaaf69f6d6f777e5f3a17493ff9dcc2bda900
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Tue Mar 28 17:58:54 2017 +0200
+
+    property: support setting flags
+
+    This also adds some tests for setting flags and enum properties
+    which depend on some properties being added in g-i's
+    gimarshallingtests:
+        https://bugzilla.gnome.org/show_bug.cgi?id=780652
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=726484
+
+ gi/pygi-property.c       |  3 +++
+ tests/test_properties.py | 34 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 37 insertions(+)
+
+commit 44a51ddd6418f8fa85df5803b8288974bcf20bc2
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Thu Mar 23 15:49:18 2017 +0100
+
+    overrides: warn on instantiation of Gio.VolumeMonitor
+
+    Gio.VolumeMonitor.get() should be used instead
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=744690
+
+ gi/overrides/Gio.py | 19 +++++++++++++++++++
+ tests/test_gio.py   | 11 +++++++++++
+ 2 files changed, 30 insertions(+)
+
+commit 275a92cb7fe530efe83349b3c7da557f22096fc0
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Tue Mar 21 19:19:33 2017 +0100
+
+    Remove gi.overrides.overridefunc
+
+    Move the code into override()
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=686835
+
+ gi/overrides/__init__.py | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
+
+commit f47027d6abde392fff03ce9b49e42a0c6f7d83cd
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Tue Mar 21 12:48:27 2017 +0100
+
+    tests: Reduce usage of timeout_add() and sleep()
+
+    * Instead of waiting for a fixed time, use a timeout and stop the main
+      loop right after the test has succeeded.
+    * Replace time.sleep to sync processes with os.pipe communication
+    * Chain idle sources instead of using multiple timeout sources
+    * Replace sleeps with unbufferd communication
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=698548
+
+ tests/test_glib.py          | 37 ++++++++++++-------
+ tests/test_iochannel.py     | 86
+ +++++++++++++++++++++++++++++++++------------
+ tests/test_mainloop.py      | 13 +++++--
+ tests/test_overrides_gtk.py |  4 +--
+ tests/test_source.py        | 10 +++---
+ tests/test_thread.py        |  6 +++-
+ 6 files changed, 111 insertions(+), 45 deletions(-)
+
+commit ab574b6c40b6e58f396c9522be864a78478617c1
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Tue Mar 21 12:43:33 2017 +0100
+
+    tests: Remove TestMainLoop.test_concurrency
+
+    The code containing the bug no longer exists and the test doesn't do
+    what it says. The thread never gets terminated and it doesn't
+    assert anything. And I'm not sure what it should assert.
+
+    For the corresponding bug see
+        https://bugzilla.gnome.org/show_bug.cgi?id=663068
+
+    While the test doesn't hurt, it adds half a second wait time
+    to the test suite.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=698548
+
+ tests/test_mainloop.py | 27 ---------------------------
+ 1 file changed, 27 deletions(-)
+
+commit 4da4a1d5c55a5db060bf3f67b708da0a00e3e957
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Mon Mar 27 16:22:12 2017 +0200
+
+    Update .gitignore: add *.dll, *.dylib, .DS_STORE
+
+ .gitignore | 3 +++
+ 1 file changed, 3 insertions(+)
+
+commit 30228a98299eeb540fd014b9519a9efd4a434d4b
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Thu Mar 23 17:59:55 2017 +0100
+
+    tests: Make test suite run on Windows
+
+    (in a msys2 environment)
+
+    * Replace LD_LIBRARY_PATH with gir code in runtests.py
+    * Remove unneeded runtests-windows.py
+    * Unset MSYSTEM to disable path separator hacks by msys2
+    * Set sys.path in runtests.py
+    * Skip various tests failing/hanging/crashing on Windows
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=780396
+
+ tests/Makefile.am           |  9 +++-----
+ tests/compat_test_pygtk.py  |  4 +++-
+ tests/runtests-windows.py   | 52
+ ---------------------------------------------
+ tests/runtests.py           | 13 ++++++++++--
+ tests/test_atoms.py         |  4 +++-
+ tests/test_everything.py    |  2 +-
+ tests/test_gi.py            |  7 +++---
+ tests/test_gio.py           |  3 +++
+ tests/test_glib.py          | 15 +++++++++----
+ tests/test_iochannel.py     | 17 ++++++++++++++-
+ tests/test_mainloop.py      |  4 ++++
+ tests/test_overrides_gdk.py |  3 ++-
+ tests/test_properties.py    |  9 +++++---
+ tests/test_subprocess.py    |  1 +
+ 14 files changed, 68 insertions(+), 75 deletions(-)
+
+commit 23deef70102657e75e07e54b4378c20214c867f3
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Wed Mar 22 14:07:49 2017 +0100
+
+    tests: Make test suite run on macOS
+
+    * Skip all tests which fail, crash or hang.
+    * Disable D-Bus in case dbus-run-session is not available.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=780396
+
+ tests/Makefile.am           | 10 +++++++---
+ tests/runtests.py           |  3 +++
+ tests/test_atoms.py         |  3 +++
+ tests/test_gdbus.py         |  9 +++++++++
+ tests/test_gi.py            |  4 ++++
+ tests/test_glib.py          |  2 ++
+ tests/test_overrides_gdk.py |  3 +++
+ tests/test_overrides_gtk.py |  2 ++
+ tests/test_source.py        |  3 +++
+ 9 files changed, 36 insertions(+), 3 deletions(-)
+
+commit 5399bb785e625c36025d6bc1e5cf2b5519759d0d
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Wed Mar 22 19:24:22 2017 +0100
+
+    Fix various compiler warnings for 32bit builds
+
+    Due to the switch to AX_COMPILER_FLAGS which adds some more
+    warning flags. I didn't notice these as they only get triggered
+    on 32bit builds. Tested with gcc 6.3 and clang 3.9.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=780409
+
+ gi/gimodule.c             | 1 +
+ gi/pygboxed.c             | 1 +
+ gi/pygenum.c              | 2 +-
+ gi/pygi-argument.c        | 2 ++
+ gi/pygi-array.c           | 4 ++--
+ gi/pygi-cache.c           | 6 +++---
+ gi/pygi-closure.c         | 4 ++--
+ gi/pygi-foreign-cairo.c   | 2 +-
+ gi/pygi-invoke.c          | 8 ++++----
+ gi/pygi-marshal-cleanup.c | 4 ++--
+ gi/pygi-signal-closure.h  | 1 +
+ gi/pygi-util.h            | 1 +
+ gi/pygi-value.h           | 2 +-
+ gi/pygobject-object.c     | 4 ++--
+ gi/pygtype.h              | 2 +-
+ 15 files changed, 25 insertions(+), 19 deletions(-)
+
+commit 29d07d6e659a518f4e0a7f53eba3dc1d9ba33c3a
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Fri Mar 24 08:25:48 2017 +0100
+
+    pep8 fix
+
+ gi/overrides/Gdk.py | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit b0476e2db4577e12b52caa3163ccb69575221d6c
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Thu Mar 23 22:32:23 2017 +0100
+
+    testhelper: only link against libpython on Windows
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=773803
+
+ configure.ac      |  6 +++---
+ tests/Makefile.am | 11 ++++++++++-
+ 2 files changed, 13 insertions(+), 4 deletions(-)
+
+commit e8c071f518a0e1c3e1877705291d24f056bed77e
+Author: Garrett Regier <garrettregier@gmail.com>
+Date:   Thu Oct 13 15:00:52 2016 -0700
+
+    overrides: Fix Gtk.TextBuffer.insert_with_tags_by_name() with no tags
+
+    The text was not inserted when no tags were provided.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=772896
+
+ gi/overrides/Gtk.py         |  3 ---
+ tests/test_overrides_gtk.py | 12 ++++++++++++
+ 2 files changed, 12 insertions(+), 3 deletions(-)
+
+commit fb0404c0bf08dedf657ce1384b283223b7192df1
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Tue Mar 21 14:03:47 2017 +0100
+
+    Make use of instance-argument annotations
+
+    Use g_callable_info_get_instance_ownership_transfer() instead
+    of hardcoding the transfer for instances.
+
+    get_instance_ownership_transfer() is available since 1.42.0, so no
+    version dependency bump is required.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=735076
+
+ gi/pygi-cache.c          | 4 +++-
+ tests/test_everything.py | 9 +++++++++
+ 2 files changed, 12 insertions(+), 1 deletion(-)
+
+commit c1ad1129b42c7938662422bb33990026572866d0
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Tue Mar 21 20:23:13 2017 +0100
+
+    Remove pyglib_gil_state_ensure/pyglib_gil_state_release
+
+    Use PyGILState_Ensure/PyGILState_Release instead.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=699440
+
+ gi/gobjectmodule.c       | 40 ++++++++++++++++++++--------------------
+ gi/pygboxed.c            | 14 +++++++-------
+ gi/pygenum.c             |  6 +++---
+ gi/pygflags.c            |  6 +++---
+ gi/pygi-error.c          |  8 ++++----
+ gi/pygi-source.c         | 16 ++++++++--------
+ gi/pyglib.c              |  8 ++++----
+ gi/pyglib.h              |  3 ---
+ gi/pygobject-object.c    | 36 ++++++++++++++++++------------------
+ gi/pygoptiongroup.c      |  9 ++++-----
+ gi/pygpointer.c          |  6 +++---
+ gi/pygspawn.c            |  4 ++--
+ gi/pygtype.c             | 18 +++++++++---------
+ tests/testhelpermodule.c | 12 ++++++------
+ 14 files changed, 91 insertions(+), 95 deletions(-)
+
+commit 16e187636d186d4c128288efb032c5ddd69569b3
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Tue Mar 21 20:05:08 2017 +0100
+
+    Remove support for building without threads
+
+    This removes the --disable-thread configure option.
+
+    * glib removed disable-threads in 2011
+    * We use PyEval_InitThreads() for some time now which means we
+      build against a Python with threads. And nobody complained.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=699440
+
+ configure.ac       | 24 ------------------------
+ gi/gobjectmodule.c |  7 +------
+ gi/pyglib.h        |  9 ++-------
+ gi/pygobject.h     | 19 +++++--------------
+ 4 files changed, 8 insertions(+), 51 deletions(-)
+
+commit 20220d5eac510e3445a96e4e9061fd1bc6ec37c7
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Tue Mar 21 14:46:00 2017 +0100
+
+    pygtkcompat: Allow multiple calls to enable(), enable_gtk() as long
+    as the version matches
+
+    enable_gtk() isn't idempotent and was breaking the API when called
+    multiple times.
+    This ignores the call in case the version passed is the same as for
+    previous calls.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=759009
+
+ pygtkcompat/pygtkcompat.py | 42
+ ++++++++++++++++++++++++++++++++++++++++++
+ tests/compat_test_pygtk.py | 21 +++++++++++++++++++++
+ 2 files changed, 63 insertions(+)
+
+commit 4af42e85a1959cbae06a1bbb7268c76890b60db9
+Author: Simon Feltman <sfeltman@src.gnome.org>
+Date:   Mon Feb 22 23:02:22 2016 -0800
+
+    tests: Update Makefile for building tests on OS X
+
+    Pull LDFLAGS into variables for command and Python extension specific.
+    Use -shext .so for the Python extension on both Linux and OS X. The
+    .so is
+    is needed by Python on OS X (not dylib).
+    Remove "all" target and explicit .la targets as these are handled
+    by automake
+    and the "check" target on demand.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=762176
+
+ tests/Makefile.am | 56
+ +++++++++++++++++++++++++++++--------------------------
+ 1 file changed, 30 insertions(+), 26 deletions(-)
+
+commit 3fe9213a3886ffa7a380dc08c5d636cda5865462
+Author: Mikhail Fludkov <misha@pexip.com>
+Date:   Fri Feb 19 16:27:53 2016 +0100
+
+    testhelper: propagate exception if _gobject could not be imported
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=772949
+
+ tests/testhelpermodule.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+commit 399939b55860211e0ab64bdfbfada2c86be8bf64
 Author: Christoph Reiter <creiter@src.gnome.org>
 Date:   Mon Mar 20 18:11:21 2017 +0100
 
@@ -12,14 +967,213 @@ Date:   Mon Mar 20 18:11:21 2017 +0100
  gi/pygi-info.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-commit e0c036d84ee66530498ec71e5388eaf23df2eb95
-Author: Christoph Reiter <creiter@src.gnome.org>
-Date:   Mon Mar 20 16:10:12 2017 +0100
+commit a731db5908b79b97277be4f5138b46010c2dd616
+Author: Mikhail Fludkov <misha@pexip.com>
+Date:   Fri Oct 14 18:41:48 2016 +0200
 
-    configure.ac: post-release version bump to 3.24.1
+    tests: build libregress with disabled cairo
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=772949
+
+ tests/Makefile.am | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+commit 2c329edb870787be1db4d5ecafdf221bead8b271
+Author: Mikhail Fludkov <misha@pexip.com>
+Date:   Fri Oct 14 18:36:21 2016 +0200
+
+    tests: use g-ir utils found by pkg-config
+
+    Use g-ir utils found by pkg-config to not fail if
+    gobject-introspection is not installed systemwide
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=772949
+
+ tests/Makefile.am | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+commit 7a3e4c005a6677ed7bf3ef807cd1a8487b0465de
+Author: Shyouzou Sugitani <shy@users.sourceforge.jp>
+Date:   Mon Jun 6 12:26:44 2016 +0200
+
+    Add a foreign type for cairo_region_t.
+
+    Based on the patch at
+        https://bugzilla.gnome.org/show_bug.cgi?id=667959#c7
+
+    * Rebased on master
+    * Fixes the cairo_region_from_arg signature
+    * Add check for pycairo region support (only in pycairo master)
+    * Add some tests
+
+    Co-Authored-By: Martin Pitt <martin.pitt@ubuntu.com>
+    Co-Authored-By: Christoph Reiter <creiter@src.gnome.org>
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=667959
+
+ gi/pygi-foreign-cairo.c | 51
+ +++++++++++++++++++++++++++++++++++++++++++++++++
+ tests/test_cairo.py     | 28 +++++++++++++++++++++++++--
+ 2 files changed, 77 insertions(+), 2 deletions(-)
+
+commit bb5aa249f1ab6be81f88fdcfb56cee8b3ae2465d
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Tue Jan 24 21:17:07 2017 +0100
+
+    aclocal: make local file discover by reading AC_CONFIG_MACRO_DIR work
+
+    aclocal needs to know where the local macros are for including
+    them and
+    for having a place to put the required system ones in.
+
+    Since 1.13 it can parse configure.ac and get the path from
+    AC_CONFIG_MACRO_DIR.
+    This didn't work because for some reasons it complains if the
+    local macros
+    start with "AM_" even if they are there (I guess it assumes they
+    can't be local).
+
+    To work around that, change the AM prefix to PYG, bump the automake
+    version so
+    we can asume aclocal finds it and remove the hardcoded paths from both
+    autogen.sh and Makefile.am.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=777713
+
+ Makefile.am  |  2 --
+ autogen.sh   |  2 +-
+ configure.ac | 12 +++++-------
+ m4/python.m4 | 12 ++++++------
+ 4 files changed, 12 insertions(+), 16 deletions(-)
+
+commit 8578ed7e9fd0486fd10e71d24f2e9f969793af8d
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Tue Jan 24 18:58:48 2017 +0100
+
+    Port from gnome-common to autoconf-archive
+
+    See https://wiki.gnome.org/Projects/GnomeCommon/Migration
+
+    Visible changes:
+
+    * --enable-compile-warnings is now [no/auto/yes] instead of
+      [no/minimum/yes/maximum/error]
+    * warnings are errors by default except for releases or if
+      --disable-Werror is passed (which is the default in jhbuild)
+
+    AX_APPEND_COMPILE_FLAGS() gets used to disable some warnings
+    enabled by
+    AX_COMPILER_FLAGS() because they trigger with pycairo/python headers.
+
+    Tested with gcc 6.3, clang 3.8.1
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=777713
+
+ .gitignore              |  3 +++
+ Makefile.am             |  8 +++-----
+ autogen.sh              | 44 ++++++++++++++++++++++++++++++--------------
+ configure.ac            | 44 +++++++++++++-------------------------------
+ gi/Makefile.am          | 10 ++++++++++
+ gi/_gobject/Makefile.am |  3 ---
+ m4/as-ac-expand.m4      | 40 ----------------------------------------
+ m4/jhflags.m4           | 21 ---------------------
+ tests/Makefile.am       |  9 ++++++---
+ 9 files changed, 65 insertions(+), 117 deletions(-)
+
+commit f939a71167bd94c9e7777312af444183f7b20441
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Tue Jan 24 18:13:56 2017 +0100
+
+    Fix various potential compiler warnings
+
+    This is useful for a the next commit which switches away from
+    gnome-common and uses AX_COMPILER_FLAGS adding some new compiler
+    warning flags.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=777713
+
+ gi/gimodule.c            |  7 ++++---
+ gi/gobjectmodule.c       | 22 +++++++++++-----------
+ gi/pygenum.c             |  2 +-
+ gi/pygflags.c            |  8 ++++----
+ gi/pygi-argument.c       |  2 ++
+ gi/pygi-array.c          | 16 ++++++++--------
+ gi/pygi-cache.c          |  2 ++
+ gi/pygi-closure.c        |  2 +-
+ gi/pygi-foreign.c        |  2 +-
+ gi/pygi-info.c           | 13 ++++++++++---
+ gi/pygi-invoke.c         |  3 +++
+ gi/pygi-property.c       |  2 +-
+ gi/pygi-signal-closure.c |  3 ++-
+ gi/pygi-value.c          | 11 +++++++----
+ gi/pygobject-object.c    | 20 ++++++++++----------
+ 15 files changed, 67 insertions(+), 48 deletions(-)
+
+commit b3fb2ecbb98bd6e40fe49a5b16e5174645886710
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Mon Mar 20 16:39:35 2017 +0100
+
+    configure.ac: post-release version bump to 3.25.0
 
  configure.ac | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 49cc3643819dad0d065d3c86327cd60d2f022dad
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Tue Jan 24 22:11:23 2017 +0100
+
+    Remove egg make target
+
+    eggs are deprecated and the command was referencing long
+    gone files and failing, so nobody was using it.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=777719
+
+ Makefile.am | 27 ---------------------------
+ 1 file changed, 27 deletions(-)
+
+commit 3aa5c80213194a8a3a993e937bae0f6b3d992547
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Tue Jan 24 22:05:48 2017 +0100
+
+    Remove legacy docs
+
+    They aren't shipped, can't be build and describe the old
+    pygobject 2 interface.
+
+    There also was a doc-dist make target, but it was broken.
+
+    If someone wants to look things up they are in git or still
+    online for 2.28: https://developer.gnome.org/pygobject/stable/
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=777719
+
+ Makefile.am                               |   9 -
+ docs/Makefile.am                          | 112 ----
+ docs/reference/ChangeLog                  | 114 ----
+ docs/reference/entities.docbook.in        |   1 -
+ docs/reference/pyglib-classes.xml         |  13 -
+ docs/reference/pyglib-functions.xml       | 293 ---------
+ docs/reference/pygobject-classes.xml      |  17 -
+ docs/reference/pygobject-constants.xml    | 304 ----------
+ docs/reference/pygobject-functions.xml    | 864
+ ---------------------------
+ docs/reference/pygobject-gboxed.xml       |  68 ---
+ docs/reference/pygobject-ginterface.xml   |  38 --
+ docs/reference/pygobject-gpointer.xml     |  42 --
+ docs/reference/pygobject-introduction.xml | 222 -------
+ docs/reference/pygobject-ref.xml          |  34 --
+ docs/reference/pygobject.xml              | 953
+ ------------------------------
+ docs/style.css                            |  10 -
+ docs/xsl/common.xsl                       |  19 -
+ docs/xsl/devhelp.xsl                      | 154 -----
+ docs/xsl/fixxref.py.in                    |  67 ---
+ docs/xsl/html.xsl                         | 285 ---------
+ docs/xsl/pdf-style.xsl                    |  11 -
+ docs/xsl/pdf.xsl                          | 259 --------
+ docs/xsl/ref-html-style.xsl               |  54 --
+ 23 files changed, 3943 deletions(-)
 
 commit 9d76190bc7a256764b1af5ec4bd05ce4a7b6e1d2
 Author: Christoph Reiter <creiter@src.gnome.org>
