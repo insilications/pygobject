@@ -4,12 +4,13 @@
 #
 Name     : pygobject
 Version  : 3.26.0
-Release  : 4
+Release  : 5
 URL      : https://download.gnome.org/sources/pygobject/3.26/pygobject-3.26.0.tar.xz
 Source0  : https://download.gnome.org/sources/pygobject/3.26/pygobject-3.26.0.tar.xz
 Summary  : Python bindings for GObject
 Group    : Development/Tools
 License  : LGPL-2.1
+Requires: pygobject-python3
 Requires: pygobject-python
 BuildRequires : pbr
 BuildRequires : pip
@@ -42,9 +43,19 @@ dev components for the pygobject package.
 %package python
 Summary: python components for the pygobject package.
 Group: Default
+Requires: pygobject-python3
 
 %description python
 python components for the pygobject package.
+
+
+%package python3
+Summary: python3 components for the pygobject package.
+Group: Default
+Requires: python3-core
+
+%description python3
+python3 components for the pygobject package.
 
 
 %prep
@@ -55,12 +66,12 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1505207074
+export SOURCE_DATE_EPOCH=1507169273
 %configure --disable-static --disable-cairo
 make V=1  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1505207074
+export SOURCE_DATE_EPOCH=1507169273
 rm -rf %{buildroot}
 %make_install
 
@@ -73,5 +84,8 @@ rm -rf %{buildroot}
 /usr/lib64/pkgconfig/pygobject-3.0.pc
 
 %files python
+%defattr(-,root,root,-)
+
+%files python3
 %defattr(-,root,root,-)
 /usr/lib/python3*/*
