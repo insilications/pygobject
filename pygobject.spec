@@ -4,7 +4,7 @@
 #
 Name     : pygobject
 Version  : 3.26.0
-Release  : 5
+Release  : 6
 URL      : https://download.gnome.org/sources/pygobject/3.26/pygobject-3.26.0.tar.xz
 Source0  : https://download.gnome.org/sources/pygobject/3.26/pygobject-3.26.0.tar.xz
 Summary  : Python bindings for GObject
