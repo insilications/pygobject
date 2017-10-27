@@ -1,3 +1,184 @@
+commit 17b4ba8707a8c6c24cd52e59a1f107dccfa9fd55
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Thu Oct 26 17:24:02 2017 +0200
+
+    pygobject-object: Fix Python GC collecting a ref cycle too early
+
+    PyGObject traverses its closures in tp_traverse, but the lifetime
+    of the closures
+    is tied to the lifetime of the GObject and not the wrapper. This
+    confuses
+    the Python GC when it sees a ref cycle and tries to break it up
+    with tp_clear.
+    Since tp_clear will not invalidate the closure and only invalidate
+    the Python
+    wrapper the closure callback gets called with the now cleared/invalid
+    object.
+
+    Instead let the GC only check the Python objects referenced by the
+    closure when tp_clear
+    would actually free them and as a result break the cycle. This is
+    only the case when
+    the wrapped object would be freed by tp_clear which is when its
+    reference count is at 1.
+
+    Original patch by Gustavo Carneiro:
+        https://bugzilla.gnome.org/show_bug.cgi?id=546802#c5
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=731501
+
+ gi/pygobject-object.c |  6 ++++--
+ tests/test_signal.py  | 29 ++++++++++++++++++++++++++++-
+ 2 files changed, 32 insertions(+), 3 deletions(-)
+
+commit b4bf1b9d936e021b1645c069c2e0a3062cfab62b
+Author: Daniel Colascione <dancol@dancol.org>
+Date:   Tue Oct 24 14:42:43 2017 +0200
+
+    Fix potential uninitialized memory access during GC
+
+    We use _PyGIDefaultArgPlaceholder as a sentinel value to represent
+    default
+    values during function argument list construction. Right now, it's
+    a Python
+    type object. We make it using PyObject_New, so most of its fields
+    end up
+    uninitialized. The object body being uninitialized wouldn't be a
+    problem if
+    the placeholder object were unreachable, but the object *can*
+    be reached
+    during GC by traversal through frame objects.
+
+    Depending on the exact contents of the uninitialized memory, the GC
+    can go on
+    to cause other kinds of memory corruption through the process.
+
+    IMHO, the easiest fix for this problem is to just make the
+    placeholder a
+    simpler data structure, like a list.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=786872
+
+ gi/gimodule.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 1136f385d6080297bd57715b749c67f5e7208ba2
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Thu Oct 26 09:35:09 2017 +0200
+
+    test: revert parts of the previous test as it's broken on 32 bit
+    builds
+
+    The int based flag type can't represent the flag value on 32 bit,
+    some more work is needed there. Remove that check again for now.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=786948
+
+ tests/test_gi.py | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit a37687d3d8bdc42aea63e551401e6686c926c556
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Mon Oct 23 12:41:45 2017 +0200
+
+    flags: Add testcase for bug 786948
+
+    Add a flags type which has a value with the highes bit set
+    and fits in an int. While the C type is a signed int, the type
+    is registered as flags, which GI interprets as unsigned.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=786948
+
+ tests/gimarshallingtestsextra.c | 29 +++++++++++++++++++++++++++++
+ tests/gimarshallingtestsextra.h | 11 +++++++++++
+ tests/test_gi.py                |  5 +++++
+ 3 files changed, 45 insertions(+)
+
+commit 44a852191a67bc7ef76202412a0102de46eb26f0
+Author: Philippe Renon <philippe_renon@yahoo.fr>
+Date:   Thu Aug 31 16:39:08 2017 +0200
+
+    fix potential overflow when marshalling flags from py interface
+
+    the overflow happens on windows platforms when an unsigned
+    flags value overflows the capacity of a signed long
+    on windows long is a 32-bit signed integer.
+
+    fixes https://bugzilla.gnome.org/show_bug.cgi?id=786948
+
+ gi/pygi-enum-marshal.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+commit fa4330df4e26bb9f77a5cf081d3cc40c342709b9
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Sun Oct 22 17:59:17 2017 +0200
+
+    to_py_array: Properly handle enum array items
+
+    It used the fallback path and copied pointers.
+    Do the same thing we do for integer items instead.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=788890
+
+ gi/pygi-array.c                 |  3 +++
+ tests/gimarshallingtestsextra.c | 21 +++++++++++++++++++++
+ tests/gimarshallingtestsextra.h |  2 ++
+ tests/test_gi.py                |  6 ++++++
+ 4 files changed, 32 insertions(+)
+
+commit 5f0f3b330cfa1eb11db4f376d141445847cb9d16
+Author: James Clarke <jrtc27@jrtc27.com>
+Date:   Fri Oct 13 18:04:45 2017 +0100
+
+    closure: Fix unaligned and out-of-bounds access
+
+    When the direction is FROM_PYTHON, a whole GIArgument was being loaded
+    from the address given by the argument, but like any other case, this
+    could point to different types, and so could run off the end of the
+    pointed-to value, and, more importantly, be performing an unaligned
+    access, causing it to crash with SIGBUS on sparc64 when running
+    test_callback_scope_call_array_inout. Instead, reuse the existing code
+    for the TO_PYTHON case to do the copying into arg_value based on the
+    type.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=788894
+
+ gi/pygi-closure.c | 40 +++++++++++++++++++++-------------------
+ 1 file changed, 21 insertions(+), 19 deletions(-)
+
+commit d831decad9e8fdb449518997dee1a5eaa21e0313
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Fri Oct 13 19:24:01 2017 +0200
+
+    build: Fix not installing .egg-info file
+
+    While removing the egg target in 49cc3643819dad0d065d I wrongfully
+    removed that part as well. While the file extension has "egg" in
+    it it has nothing to do with eggs..
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=777719
+
+ Makefile.am | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+commit 5b61ac3f2a66d93110642f43bec4f2a4e656681a
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Thu Oct 12 18:58:04 2017 +0200
+
+    configure.ac: version bump to 3.26.1
+
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 47af078546b1e9e4396bdea877c1cf0f21708818
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Tue Sep 12 08:31:22 2017 +0200
+
+    release 3.26.0
+
+ NEWS | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
 commit 9580b2f1e447cea2d50f8ab83a715b29e4e862e6
 Author: Christoph Reiter <creiter@src.gnome.org>
 Date:   Tue Sep 12 08:25:25 2017 +0200
