@@ -1,6 +1,6 @@
 Name     : pygobject
 Version  : 3.26.1
-Release  : 9
+Release  : 10
 URL      : https://download.gnome.org/sources/pygobject/3.26/pygobject-3.26.1.tar.xz
 Source0  : https://download.gnome.org/sources/pygobject/3.26/pygobject-3.26.1.tar.xz
 Summary  : Python bindings for GObject
@@ -17,7 +17,7 @@ BuildRequires : pkgconfig(gio-2.0)
 BuildRequires : pkgconfig(glib-2.0)
 BuildRequires : pkgconfig(gobject-introspection-1.0)
 BuildRequires : pkgconfig(libffi)
-BuildRequires : py2cairo
+BuildRequires : pycairo-dev
 BuildRequires : python-dev
 BuildRequires : python3-dev
 BuildRequires : setuptools
@@ -93,7 +93,7 @@ CFLAGS="${CFLAGS:--O2 -fPIC -g -feliminate-unused-debug-types  -pipe -Wall -Wp,-
         --sharedstatedir=/usr/com \
         --mandir=/usr/share/man \
         --infodir=/usr/share/info \
-        --disable-static --disable-cairo --with-python=python2
+        --disable-static --with-python=python2
 make V=1  %{?_smp_mflags}
 popd
 
@@ -116,7 +116,7 @@ CFLAGS="${CFLAGS:--O2 -fPIC -g -feliminate-unused-debug-types  -pipe -Wall -Wp,-
         --sharedstatedir=/usr/com \
         --mandir=/usr/share/man \
         --infodir=/usr/share/info \
-        --disable-static --disable-cairo --with-python=python3
+        --disable-static --with-python=python3
 make  V=1  %{?_smp_mflags}
 popd
 
