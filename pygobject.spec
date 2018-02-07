@@ -4,7 +4,7 @@
 #
 Name     : pygobject
 Version  : 3.26.1
-Release  : 12
+Release  : 13
 URL      : https://download.gnome.org/sources/pygobject/3.26/pygobject-3.26.1.tar.xz
 Source0  : https://download.gnome.org/sources/pygobject/3.26/pygobject-3.26.1.tar.xz
 Summary  : Python bindings for GObject
@@ -66,12 +66,12 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1517856760
-%configure --disable-static
+export SOURCE_DATE_EPOCH=1518042605
+%configure --disable-static --enable-cairo
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1517856760
+export SOURCE_DATE_EPOCH=1518042605
 rm -rf %{buildroot}
 %make_install
 
