@@ -1,4 +1,2553 @@
-commit 17b4ba8707a8c6c24cd52e59a1f107dccfa9fd55
+commit 3ba1f36ebd63ce4477fab1c0d1c9d7fc817f19a8
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Tue Mar 27 22:48:17 2018 +0200
+
+    release
+
+ NEWS | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+commit 8eb973ec4cafa6bbedb47e8d12bd02e6ed318273
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Sun Mar 25 19:12:54 2018 +0200
+
+    resulttuple: fix a wrong decref
+
+    We don't get ownership here so don't unref.
+    Thist function is only used in the test suite.
+
+ gi/pygi-resulttuple.c     | 2 --
+ tests/test_resulttuple.py | 6 ++++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+commit 1c962cb74cd99e0169abed45cf813550574a2a80
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Fri Mar 23 07:23:21 2018 +0100
+
+    autotools: define PY_SSIZE_T_CLEAN for the test extension
+
+ tests/Makefile.am | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+commit 1b072bb45b07bbb461bf9c8318a81a26e0d65a18
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Fri Mar 23 07:07:26 2018 +0100
+
+    setup.py: always define PY_SSIZE_T_CLEAN. Fixes #185
+
+ gi/pyglib-python-compat.h | 6 ++++++
+ setup.py                  | 5 +++--
+ 2 files changed, 9 insertions(+), 2 deletions(-)
+
+commit 997f6d95f3a1d8ce8376eb10e3f2d76d3b5e29d3
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Mon Mar 19 13:52:21 2018 +0100
+
+    properties: fix a crash when setting a str value containing
+    surrogates. Fixes #169
+
+    In Python 3 decoding unicode fails if it contains surrogates. Handle
+    that case.
+    This ususally happens with filenames where undecodable bytes get
+    converted to surrogates.
+
+ gi/pygi-value.c          |  4 ++++
+ gi/pygobject-object.c    |  4 ++--
+ tests/test_properties.py | 12 +++++++++++-
+ 3 files changed, 17 insertions(+), 3 deletions(-)
+
+commit c9cfde92d7a1eb558c66dc9e8e1959816fcbf0cc
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Sun Mar 18 07:33:19 2018 +0100
+
+    gtk overrides: Fix return type Gtk.TreePath with depth == 0. Fixes
+    #143
+
+    compare() also errors out with depth == 0, but str() shouldn't fail
+    as it's important for debugging.
+
+ gi/overrides/Gtk.py         | 2 +-
+ tests/test_overrides_gtk.py | 4 ++++
+ 2 files changed, 5 insertions(+), 1 deletion(-)
+
+commit c6d57734cf97b7eb7b11b21a9096d70dd1465865
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Sun Mar 18 21:57:07 2018 +0100
+
+    setup.py: build the test extension in a separate build dir. Fixes #181
+
+    The install command just copies the whole build tree as is when
+    installing
+    which installs the test extension when tests are build before install.
+
+    To avoid that set the build base of the extension to a a subdirectory
+    of the build base of the main build base.
+
+ setup.py | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+commit 923bef11d037e82ae0d91cb495a09d09ab93e3ca
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Sun Mar 18 22:28:34 2018 +0100
+
+    setup.py: forward force flag to the test extension build
+
+    backport from master
+
+ setup.py | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit 43758746432d5cd59409cd54eb242c8799e249c3
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Sat Mar 17 19:09:19 2018 +0100
+
+    version bump
+
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit ca6918747214484a429c039caed02dd858c307fe
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Sat Mar 17 18:46:05 2018 +0100
+
+    release
+
+ NEWS | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+commit ab470a4f02b294ec8f1f11ea30c9ed4625490a52
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Fri Mar 16 23:48:20 2018 +0100
+
+    tests: fix glib tests with newest glib
+
+    g_filename_from_utf8() was recently fixed to return filenames
+    instead of bytes.
+    See https://bugzilla.gnome.org/show_bug.cgi?id=756128
+
+ tests/test_glib.py | 21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
+
+commit 76d4503ff856d7cc6e15d45bb82d79c17bda69f7
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Fri Mar 16 15:17:37 2018 +0100
+
+    setup.py: don't install tests
+
+    Now that the tests directory has a __init__.py and is a Python package
+    find_packages() returns it and setup() will install it.
+
+    Instead of using find_packages() hardcode the list of included
+    packages.
+
+ setup.py | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+commit f6c17c998e12a38bbc1c14e43fa969f01fbac46b
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Wed Mar 14 12:31:28 2018 +0100
+
+    pyg_flags_get_value_names: fix a leak
+
+    PyList_Append() is transfer-none for the value
+
+ gi/pygflags.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
+
+commit 9b4a056bbd7003bdb12f3eaf30524caa8747adb1
+Author: Mathieu Duponchelle <mathieu@centricular.com>
+Date:   Tue Mar 13 19:41:20 2018 +0100
+
+    all around: Fix some assumptions about the size of long
+
+    This was creating various issues on 64-bit Windows, where sizeof(long)
+    is usually 4.
+
+ gi/pygi-basictype.c |  6 +++---
+ gi/pygi-closure.c   | 10 +++++-----
+ gi/pygi-value.c     |  2 +-
+ 3 files changed, 9 insertions(+), 9 deletions(-)
+
+commit b8bffa925566e561bb6270db5aecbe2b7b70d178
+Author: Mathieu Duponchelle <mathieu@centricular.com>
+Date:   Tue Mar 13 19:12:23 2018 +0100
+
+    GValue override: chain up __del__
+
+    This was added in d08e244d , which was recently reverted, that
+    specific bit was however unrelated and still relevant.
+
+    Fix #176
+
+ gi/overrides/GObject.py | 3 +++
+ 1 file changed, 3 insertions(+)
+
+commit 48171470feccca4c5595a5f28adf6630fca66515
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Thu Mar 1 16:07:10 2018 +0100
+
+    gitlab-ci: add Python 3.7.0b2 job
+
+ .gitlab-ci.yml           | 5 +++++
+ .gitlab-ci/Dockerfile    | 1 +
+ .gitlab-ci/run-docker.sh | 2 ++
+ 3 files changed, 8 insertions(+)
+
+commit a0b633185d1dbb2cfef46f85b6b593c0c296e6f7
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Sat Mar 10 20:03:33 2018 +0100
+
+    marshal-cleanup: save and restore exception around cleanup
+
+    With Python 3.7 some Python API in the cleanup path clears exceptions
+    which makes us return NULL in the end without an error set.
+
+    Make if safe to call the cleanup functions with an error set by
+    saving and restoring exceptions.
+
+ gi/pygi-marshal-cleanup.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+
+commit 8eee391694e657a79281707e476b1950a87f4d29
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Sun Mar 11 13:13:30 2018 +0100
+
+    _struct_dealloc: handle being called with an error set
+
+    With Python 3.7 it gets called with an error set and tp_dealloc
+    implementations need to handle that.
+    Fix by saving and restoring the error.
+
+ gi/pygi-struct.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+
+commit 7a1b725805b97a037f38c844d107644c780d87b6
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Sat Mar 10 18:54:28 2018 +0100
+
+    IntrospectionModule: __path__ should be List[str] and not str
+
+    This fixes a crash when calling help() on the module which got
+    stricter with
+    Python 3.7.
+
+    It's a bit questionable why the type has __path__ in the first
+    place as
+    that's only meant for packages. But let's leave that for now.
+
+ gi/module.py     | 5 +++--
+ tests/test_gi.py | 6 ++++--
+ 2 files changed, 7 insertions(+), 4 deletions(-)
+
+commit 2386fb7070dcde591313abb10f3e65d7cef7364f
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Sat Mar 10 18:04:14 2018 +0100
+
+    tests_gi: Use capture_output() context manager instead of manually
+    mocking stdout
+
+ tests/helper.py  |  2 +-
+ tests/test_gi.py | 14 +++-----------
+ 2 files changed, 4 insertions(+), 12 deletions(-)
+
+commit e0b92c65f4af126f1ba9c924e8e71b958a280a6e
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Mon Mar 12 13:18:34 2018 +0100
+
+    version bump
+
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit dde2f66f9d95f4da81230b11317207a1ac08d84e
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Mon Mar 12 08:36:14 2018 +0100
+
+    release
+
+ configure.ac | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 9562b75a825c2a0c223bd89a2859dae5b419647f
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Mon Mar 12 12:39:52 2018 +0100
+
+    tests: fix with stable builds by force enabling PyGIDeprecationWarning
+
+ tests/__init__.py | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+commit 22b41598d69fce167a0d44f6a9f91034d099f696
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Mon Mar 12 08:35:27 2018 +0100
+
+    Update NEWS
+
+ NEWS | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+commit 02664122c260a31fa9d242d09ddede639fea80bb
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Sat Mar 10 10:41:27 2018 +0100
+
+    GLib.Variant: Fix creation of guchar array from bytes. Fixes #174
+
+    This is some fallout from !4
+
+    Instead of only allowing certain types just make sure that the passed
+    value is iterable.
+
+ gi/overrides/GLib.py         |  4 +++-
+ tests/test_overrides_glib.py | 16 ++++++++++++++++
+ 2 files changed, 19 insertions(+), 1 deletion(-)
+
+commit 92f94761dfed4105e0b3f6d1c490f60ec31816a8
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Thu Mar 1 18:03:26 2018 +0100
+
+    version bump
+
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 7e571ea62074243eef36110c240e192e5682a687
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Thu Mar 1 17:57:08 2018 +0100
+
+    release
+
+ NEWS | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+commit 1138bc7e0aeb8d4e7354c6cfd5a63edaa724d3fb
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Tue Feb 27 12:46:11 2018 +0100
+
+    setup.py: fix distcheck
+
+ MANIFEST.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 79ee93ea667c7a2cdacf9c770c0e60dc624ced0b
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Fri Feb 23 18:15:55 2018 +0100
+
+    coverage: exclude external headers. See #168
+
+    While we could just pass --no-external we want the coverage of
+    the gobject-introspection files.
+
+ .gitlab-ci/coverage-docker.sh | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+commit 9ae49b49850dca86566b745966104bdd33914df7
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Fri Feb 23 17:33:55 2018 +0100
+
+    coverage.py: ignore errors
+
+    not sure where that path is comming from, it worked in the MR..
+
+ .gitlab-ci/coverage-docker.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 2d812a6bc4d0952997a3ed3c63c4b09d8c95c103
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Fri Feb 23 11:02:03 2018 +0100
+
+    gitlab-ci: Add Windows coverage support. See #168
+
+    Use coverage.py and cygwin lcov to generate coverage files.
+    In the report generation step fixup the Windows paths in the coverage
+    files to match the Linux/Docker ones.
+
+ .gitlab-ci.yml                | 42
+ +++++++++++++++++++++++++++---------------
+ .gitlab-ci/coverage-docker.sh |  3 +++
+ .gitlab-ci/fixup-cov-paths.py | 35 +++++++++++++++++++++++++++++++++++
+ .gitlab-ci/test-docker.sh     |  5 +++++
+ .gitlab-ci/test-msys2.sh      | 33 +++++++++++++++++++++++++++++++--
+ 5 files changed, 101 insertions(+), 17 deletions(-)
+
+commit 1534289ce5934b73b5c980f8e246192009337776
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Tue Feb 20 16:38:25 2018 +0100
+
+    gitlab-ci: Add MSYS2 test jobs
+
+    This assumes a gitlab runner with a "win32" tag which has
+    MSYS2 installed in the default path and uses the "cmd" shell.
+
+ .gitlab-ci.yml           | 32 +++++++++++++++++++++++++++-----
+ .gitlab-ci/test-msys2.sh | 28 ++++++++++++++++++++++++++++
+ 2 files changed, 55 insertions(+), 5 deletions(-)
+
+commit 20fa66387020877a3ae20a6b48bba52153c7bd6c
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Tue Feb 20 18:17:15 2018 +0100
+
+    tests: skip one more GdkAtom test on Windows
+
+    This has started to crash with newer gtk
+
+ tests/test_atoms.py | 2 ++
+ 1 file changed, 2 insertions(+)
+
+commit d3cd49ce8777312cbb91b82bd076c0e4b761c848
+Merge: 5ec1aea8 aab23dbd
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Sun Feb 18 08:32:22 2018 +0000
+
+    Merge branch 'gilabissue123' into 'master'
+
+    Performance improvements to avoid GIL congestion
+
+    See merge request GNOME/pygobject!13
+
+commit 5ec1aea8ab4599a7a0945bd5754ce79c7c5cbef3
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Sat Feb 17 18:13:47 2018 +0100
+
+    coverage: don't just use the major python version number for coverage
+    files names
+
+    all py3 jobs wrote to the same file, oops..
+
+ .gitlab-ci/test-docker.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit af7aa11acebd9a34e6aee41dc77c0d7c3000fd47
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Sat Feb 17 15:23:49 2018 +0100
+
+    gitlab-ci: Add coverage reports
+
+    Use gcov/lcov and coverage.py; merge all results and provide
+    the final html reports as job artifacts.
+
+ .gitignore                    |  1 +
+ .gitlab-ci.yml                | 18 ++++++++++++++++++
+ .gitlab-ci/Dockerfile         |  1 +
+ .gitlab-ci/coverage-docker.sh | 17 +++++++++++++++++
+ .gitlab-ci/test-docker.sh     | 20 ++++++++++++++++----
+ setup.cfg                     |  7 +++++++
+ 6 files changed, 60 insertions(+), 4 deletions(-)
+
+commit 8df9570b7f25ceaaa590c8da33952a7bdeade203
+Author: Mathieu Duponchelle <mathieu@centricular.com>
+Date:   Fri Feb 16 16:54:06 2018 +0100
+
+    array, list: always run items cleanup funcs
+
+ gi/pygi-array.c | 70
+ ++++++++++++++++++++++++++++++++-------------------------
+ gi/pygi-list.c  | 37 +++++++++++++++---------------
+ 2 files changed, 58 insertions(+), 49 deletions(-)
+
+commit 9978b521450d9b2a038d48492550dcab49c7b113
+Author: Mathieu Duponchelle <mathieu@centricular.com>
+Date:   Fri Feb 16 00:49:25 2018 +0100
+
+    pygi-struct-marshal: perform boxed copy ...
+
+    when the cleanup marshaller will not be called, that is when
+    marshalling something that is not actually an argument.
+
+    Fixes #164
+
+ gi/pygi-struct-marshal.c | 48
+ ++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 32 insertions(+), 16 deletions(-)
+
+commit e41dd91e9e62eeaeaa0fee97b50500591a87b249
+Author: Mathieu Duponchelle <mathieu@centricular.com>
+Date:   Thu Feb 15 23:32:37 2018 +0100
+
+    Revert "Revert "to python struct marshalling: copy boxed during
+    cleanup""
+
+    This reverts commit 10c062001ddd948b0a70545cbf613b38ed6fa46c.
+
+ gi/pygi-struct-marshal.c | 34 +++++++++++++++++++++++++++-------
+ tests/test_gi.py         |  1 -
+ 2 files changed, 27 insertions(+), 8 deletions(-)
+
+commit b1d1c8d9d8820fe405bddd8e9dea88b5ec2fcce2
+Author: Mathieu Duponchelle <mathieu@centricular.com>
+Date:   Thu Feb 15 23:32:20 2018 +0100
+
+    Revert "Revert "to python marshalling: collect cleanup data""
+
+    This reverts commit fa555767464fbe551b14cfbc121febc5290b1371.
+
+ gi/pygi-array.c               | 24 ++++++++++++++++++------
+ gi/pygi-basictype.c           |  8 +++++---
+ gi/pygi-basictype.h           |  3 ++-
+ gi/pygi-cache.h               | 13 ++++++++++---
+ gi/pygi-closure.c             |  9 +++++++--
+ gi/pygi-enum-marshal.c        |  6 ++++--
+ gi/pygi-error.c               |  3 ++-
+ gi/pygi-hashtable.c           | 13 +++++++++----
+ gi/pygi-invoke-state-struct.h |  3 +++
+ gi/pygi-invoke.c              | 17 +++++++++++++----
+ gi/pygi-list.c                | 38 +++++++++++++++++++++++++++++++-------
+ gi/pygi-marshal-cleanup.c     | 13 ++++++++-----
+ gi/pygi-object.c              |  8 +++++---
+ gi/pygi-struct-marshal.c      |  5 +++--
+ 14 files changed, 120 insertions(+), 43 deletions(-)
+
+commit 26b7fc3fee55870cc944b0f718da8a75c75f4eae
+Author: Mathieu Duponchelle <mathieu@centricular.com>
+Date:   Fri Feb 16 00:45:40 2018 +0100
+
+    Revert "Revert "pygi-boxed: make in-place copy safer""
+
+    This reverts commit 700c785367975995d24a8ffd00b2aa028ccf77e8.
+
+ gi/pygi-boxed.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+commit d08e244d011121f8ffd5c21437e0f11fe9545bbf
+Author: Mathieu Duponchelle <mathieu@centricular.com>
+Date:   Thu Feb 15 23:32:08 2018 +0100
+
+    Revert "Revert "Revert "Refactor boxed wrapper memory management
+    strategy"""
+
+    This reverts commit a506d5e3c64321c43a4ce7c2a72ca8d36e985999.
+
+ gi/gimodule.c            |  6 +---
+ gi/overrides/GLib.py     |  4 +++
+ gi/overrides/GObject.py  |  3 --
+ gi/pygi-boxed.c          | 32 +++++---------------
+ gi/pygi-boxed.h          |  4 +--
+ gi/pygi-property.c       |  6 +++-
+ gi/pygi-source.c         |  6 ++--
+ gi/pygi-struct-marshal.c | 78
+ ++++--------------------------------------------
+ tests/test_gi.py         |  1 +
+ tests/test_source.py     |  8 ++---
+ 10 files changed, 29 insertions(+), 119 deletions(-)
+
+commit c56b4510649dae58519681c1a53aed85d598139e
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Fri Feb 16 17:43:00 2018 +0100
+
+    tests: add tests for boxed in GLists. See !24
+
+ tests/regressextra.c     | 33 +++++++++++++++++++++++++++++++++
+ tests/regressextra.h     |  4 ++++
+ tests/test_everything.py | 16 ++++++++++++++++
+ 3 files changed, 53 insertions(+)
+
+commit 9c3cb6b49c33f53d637e80aad68a67e89d0eb944
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Fri Feb 16 10:12:42 2018 +0100
+
+    gitlab-ci: use ccache
+
+ .gitlab-ci.yml           | 9 +++++++++
+ .gitlab-ci/Dockerfile    | 3 +++
+ .gitlab-ci/run-docker.sh | 6 ++++--
+ 3 files changed, 16 insertions(+), 2 deletions(-)
+
+commit 91a25c2aa1776e5e5757dc317a798615c31b3854
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Fri Feb 16 09:59:31 2018 +0100
+
+    tests: Add a test for a out transfer-none boxed array
+
+    Makes sure we copy the array items as well.
+
+ tests/regressextra.c     | 18 ++++++++++++++++++
+ tests/regressextra.h     |  3 +++
+ tests/test_everything.py |  6 ++++++
+ 3 files changed, 27 insertions(+)
+
+commit e00e38f9c44568f7fab643a069f86c576011ddcc
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Fri Feb 16 08:49:38 2018 +0100
+
+    tests: add a pytest hook for handling unhandled exception in closures
+
+    In PyGObject when an exception is raised in a closure called from
+    C then
+    the error gets passed to sys.excepthook (on the main thread at least)
+    and the error is by default printed to stdout. Since pytest by default
+    hides stdout, errors can be easily missed now.
+
+    To make these errors more visible add a test wrapper which checks
+    sys.excepthook for unhandled exceptions and reraises them.
+    This makes the tests fail and as a bonus also shows the right
+    stack trace instead of just the error message.
+
+ tests/Makefile.am      |  1 +
+ tests/compathelper.py  |  5 +++++
+ tests/conftest.py      | 31 +++++++++++++++++++++++++++++++
+ tests/test_glib.py     | 13 +++++++++++++
+ tests/test_mainloop.py | 28 ++++++++--------------------
+ tests/test_option.py   | 18 +++++++-----------
+ 6 files changed, 65 insertions(+), 31 deletions(-)
+
+commit aae383cf44ee3eabcc4b4122049ea277524d5001
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Wed Feb 14 02:15:54 2018 +0100
+
+    version bump
+
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 9c1d66be67008604206e336a0433c5cdf824b837
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Wed Feb 14 01:47:12 2018 +0100
+
+    release
+
+ NEWS | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+commit 86fb783d0f00a49ea7e66ad73be7e150eb0162db
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Wed Feb 14 02:07:13 2018 +0100
+
+    Fix make distcheck
+
+ tests/Makefile.am | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+commit 618ccf06ad75bc481dec59b7da86a550571968c5
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Wed Feb 14 01:34:02 2018 +0100
+
+    setup.py: cache pkg-config calls
+
+    This saves 300ms for a noop build_tests command
+
+ setup.py | 29 +++++++++++++++++------------
+ 1 file changed, 17 insertions(+), 12 deletions(-)
+
+commit ad9fc2d9cd8d9a0f3fd07a46e7056a182f18d399
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Wed Feb 14 01:29:09 2018 +0100
+
+    gitlab-ci: Install pytest-faulthandler
+
+    This makes pytest print a Python stack trace in case of a crash.
+
+ .gitlab-ci/test-docker.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 0d3fbc2a8d10c9eea4e3eef905d52c946f8ab7e9
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Wed Feb 14 01:16:51 2018 +0100
+
+    setup.py: set the same env vars for testing as autotools
+
+    Also don't print a Python stack trace of the calling process on
+    error, just return the error status.
+
+ setup.py | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+commit 0fcd57846b0053319dc5a28503d3eab173927fc6
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Wed Feb 14 00:56:47 2018 +0100
+
+    tests: add a test for Gio.DBusNodeInfo.new_for_xml, see #164
+
+    This was fixed by the recent reverts
+
+ tests/test_gdbus.py | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
+
+commit a506d5e3c64321c43a4ce7c2a72ca8d36e985999
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Tue Feb 13 23:26:21 2018 +0100
+
+    Revert "Revert "Refactor boxed wrapper memory management strategy""
+
+    This reverts commit daefdfa3e4dc97b4ae38250358d722f09764cc9b.
+
+ gi/gimodule.c            |  6 +++-
+ gi/overrides/GLib.py     |  4 ---
+ gi/overrides/GObject.py  |  3 ++
+ gi/pygi-boxed.c          | 32 +++++++++++++++-----
+ gi/pygi-boxed.h          |  4 +--
+ gi/pygi-property.c       |  6 +---
+ gi/pygi-source.c         |  6 ++--
+ gi/pygi-struct-marshal.c | 78
+ ++++++++++++++++++++++++++++++++++++++++++++----
+ tests/test_gi.py         |  1 -
+ tests/test_source.py     |  8 +++--
+ 10 files changed, 119 insertions(+), 29 deletions(-)
+
+commit 700c785367975995d24a8ffd00b2aa028ccf77e8
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Tue Feb 13 23:26:15 2018 +0100
+
+    Revert "pygi-boxed: make in-place copy safer"
+
+    This reverts commit 9d96df1ea3ad533885fbcae4de693a3cd81e765a.
+
+ gi/pygi-boxed.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
+
+commit fa555767464fbe551b14cfbc121febc5290b1371
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Tue Feb 13 23:26:03 2018 +0100
+
+    Revert "to python marshalling: collect cleanup data"
+
+    This reverts commit 80eab029ce4e181624d7b845a4b517051797080d.
+
+ gi/pygi-array.c               | 24 ++++++------------------
+ gi/pygi-basictype.c           |  8 +++-----
+ gi/pygi-basictype.h           |  3 +--
+ gi/pygi-cache.h               | 13 +++----------
+ gi/pygi-closure.c             |  9 ++-------
+ gi/pygi-enum-marshal.c        |  6 ++----
+ gi/pygi-error.c               |  3 +--
+ gi/pygi-hashtable.c           | 13 ++++---------
+ gi/pygi-invoke-state-struct.h |  3 ---
+ gi/pygi-invoke.c              | 17 ++++-------------
+ gi/pygi-list.c                | 38 +++++++-------------------------------
+ gi/pygi-marshal-cleanup.c     | 13 +++++--------
+ gi/pygi-object.c              |  8 +++-----
+ gi/pygi-struct-marshal.c      |  5 ++---
+ 14 files changed, 43 insertions(+), 120 deletions(-)
+
+commit 10c062001ddd948b0a70545cbf613b38ed6fa46c
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Tue Feb 13 23:09:49 2018 +0100
+
+    Revert "to python struct marshalling: copy boxed during cleanup"
+
+    This reverts commit 7ed8191818733b9130bce84f782dc6f8f734abf7.
+
+ gi/pygi-struct-marshal.c | 34 +++++++---------------------------
+ tests/test_gi.py         |  1 +
+ 2 files changed, 8 insertions(+), 27 deletions(-)
+
+commit e427d1a3a44e882c998543bb2c189700409df873
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Mon Feb 12 20:35:09 2018 +0100
+
+    tests: Fix tests under Wayland. Fixes #163
+
+    These tests try to test Gdk.Atom with the exsting API in libgdk
+    but under Wayland they either don't return Gdk.Atom or block.
+
+    Since they are disabled on other platforms just change them to only
+    run under X11.
+
+ tests/test_atoms.py | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
+
+commit 3e91df3dca3691635b978d1dc661506213e0efe3
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Mon Feb 12 15:39:41 2018 +0100
+
+    docs: fix build with sphinx 1.7.0
+
+    1.7.0 no longer allows non-class references as param types
+
+ docs/guide/api/signals.rst | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit 5a25c98cb6d387791e41c7dc240c55814988519a
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Sun Feb 11 18:08:07 2018 +0100
+
+    tests: Make it possible to use pytest directly
+
+    pytest will just import the files passed to it and try to run tests.
+    Since we need to run some setup code convert the tests directory to
+    a Python package and do the initialization in __init__.py. This makes
+    the init code (env vars, typelib search path, dbus) always run when
+    something from the package gets imported.
+
+        python3 setup.py build_tests  # build pygobject and tests
+        py.test-3 tests/test_gi.py  # run tests in test_gi.py only
+
+ docs/devguide/building_testing.rst |   6 ++
+ setup.py                           |  10 +--
+ tests/Makefile.am                  |   8 ++-
+ tests/__init__.py                  | 102 ++++++++++++++++++++++++++
+ tests/helper.py                    |   4 +-
+ tests/runtests.py                  | 143
+ +++++++------------------------------
+ tests/test_atoms.py                |   4 +-
+ tests/test_cairo.py                |   6 +-
+ tests/test_docstring.py            |   2 +
+ tests/test_error.py                |   6 +-
+ tests/test_everything.py           |   6 +-
+ tests/test_fields.py               |   2 +
+ tests/test_gdbus.py                |   2 +
+ tests/test_generictreemodel.py     |   5 +-
+ tests/test_gi.py                   |   6 +-
+ tests/test_gio.py                  |   4 +-
+ tests/test_glib.py                 |   2 +
+ tests/test_gobject.py              |   8 +--
+ tests/test_gtype.py                |   2 +
+ tests/test_import_machinery.py     |   2 +
+ tests/test_interface.py            |   4 +-
+ tests/test_internal_api.py         |  10 ++-
+ tests/test_iochannel.py            |   6 +-
+ tests/test_mainloop.py             |   2 +
+ tests/test_object_marshaling.py    |   2 +
+ tests/test_option.py               |   2 +
+ tests/test_ossig.py                |   2 +
+ tests/test_overrides_gdk.py        |   4 +-
+ tests/test_overrides_glib.py       |   4 +-
+ tests/test_overrides_gtk.py        |   4 +-
+ tests/test_overrides_pango.py      |   2 +
+ tests/test_properties.py           |  10 ++-
+ tests/test_pygtkcompat.py          |   4 +-
+ tests/test_repository.py           |   8 +--
+ tests/test_resulttuple.py          |   2 +
+ tests/test_signal.py               |  13 ++--
+ tests/test_source.py               |   8 +--
+ tests/test_subprocess.py           |   2 +
+ tests/test_thread.py               |   5 +-
+ tests/test_typeclass.py            |   6 +-
+ tests/test_unknown.py              |   5 +-
+ tests/testmodule.py                |   2 +
+ 42 files changed, 244 insertions(+), 193 deletions(-)
+
+commit 21cee6cc4fbc7fb1a28a15840924b0da52b49fca
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Sun Feb 11 16:08:18 2018 +0100
+
+    tests: Make patching in pygtkcompat reversible
+
+    Record all the attribute and sys.modules changes and add an API
+    for reverting them after tests are completed.
+
+    This allows us to run the pygtkcompat tests in the same test process
+    as other tests.
+
+ pygtkcompat/pygtkcompat.py                         | 273
+ ++++++++++++---------
+ setup.py                                           |   7 -
+ tests/Makefile.am                                  |   4 +-
+ tests/runtests.py                                  |   2 +-
+ .../{compat_test_pygtk.py => test_pygtkcompat.py}  |  96 ++++++--
+ 5 files changed, 237 insertions(+), 145 deletions(-)
+
+commit 7f5aedb6e1f317b33a96d0c77641b95f182b2a47
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Sat Feb 10 13:31:23 2018 +0100
+
+    version bump
+
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit c65efcb0bb4a73c9fb1ffa10225795adc489a081
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Sat Feb 10 13:22:17 2018 +0100
+
+    release
+
+ NEWS         | 11 +++++++++++
+ docs/conf.py |  1 +
+ 2 files changed, 12 insertions(+)
+
+commit 11de6f55f48447325325ec2f334af5576d12e2ed
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Sat Feb 10 11:37:55 2018 +0100
+
+    tests: switch to pytest as the default test runner. See #153
+
+    The TEST_NAMES env var gets translated to work with the pytest syntax
+    (foo.py::class::method).
+
+    Rename one class which triggers a pytest warning because it starts
+    with
+    "Test" but isn't one.
+
+    Remove erroring out on Python warnings as pytest triggers some
+    deprecation warnings by default.
+
+ .gitignore                         |  2 ++
+ .gitlab-ci/test-docker.sh          |  2 +-
+ docs/devguide/building_testing.rst |  9 +++++++++
+ docs/devguide/dev_environ.rst      |  6 ++++--
+ tests/Makefile.am                  |  2 +-
+ tests/runtests.py                  | 16 +++++++++-------
+ tests/test_generictreemodel.py     | 16 ++++++++--------
+ 7 files changed, 34 insertions(+), 19 deletions(-)
+
+commit 9a9bb732752e7bec42a1c13f080b37536876e3e0
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Sat Feb 10 11:16:49 2018 +0100
+
+    tests: set DBUS_SESSION_BUS_ADDRESS to some invalid value to
+    disable dbus
+
+    While keepig it empty works on Linux, on Windows setting an invalid
+    value is needed to disable dbus.
+
+ tests/runtests.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 64b02e3017b50a17a087ee821522a1cb8e066f27
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Fri Feb 9 17:06:52 2018 +0100
+
+    tests: remove locale test for uppercasing C names
+
+    Someone on IRC had problems running the test suite, and that's not
+    the first
+    time, so remove it for now (added in 63c7f17c2248)
+
+    The locale generation adds extra dependencies and only works on Linux,
+    and while the test does something useful it complicates things
+    too much.
+
+    We need to find a better way (in Python if possible) to test for
+    locale
+    dependend upper()/lower().
+
+ MANIFEST.in          |  2 +-
+ tests/Makefile.am    |  1 -
+ tests/te_ST@nouppera | 50
+ --------------------------------------------------
+ tests/test_gi.py     | 31 -------------------------------
+ 4 files changed, 1 insertion(+), 83 deletions(-)
+
+commit d9516e8dc32db9494139a733ae3a535d2f89c6e1
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Fri Feb 9 14:12:20 2018 +0100
+
+    tests: disable dbus tests on Windows/macOS
+
+    dbus-daemon is available in MSYS2 unlike dbus-run-session but the
+    tests fail. Disable dbus tests on Windows/macOS to restore the
+    old behaviour for now.
+
+ tests/runtests.py | 3 +++
+ 1 file changed, 3 insertions(+)
+
+commit 1e28b03b1562c030a956ed82337eaacfa38c304e
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Thu Feb 8 17:10:21 2018 +0100
+
+    tests: move dbus session bus handling into runtests.py
+
+    This allows us to remove code duplication in autotools/distutils.
+
+    This also fixes the noisy dbus output during tests because
+    dbus-run-session
+    forwarded dbus logging output to stderr.
+
+ .gitlab-ci/Dockerfile    |  1 -
+ .gitlab-ci/run-docker.sh |  0
+ setup.py                 | 14 ++------------
+ tests/Makefile.am        | 10 +++-------
+ tests/runtests.py        | 27 +++++++++++++++++++++++++--
+ 5 files changed, 30 insertions(+), 22 deletions(-)
+
+commit 095388a7c83dbffbe042f842789285f63996fc11
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Thu Feb 8 15:38:24 2018 +0100
+
+    gitlab-ci: use pyenv in docker instead of the deadsnakes PPA
+
+    deadsnakes only provides packages for Ubuntu LTS versions and doesn't
+    include versions present in that Ubuntu version.
+    With Ubuntu zesty this happened to work, but now that that's EOL
+    we have to switch to artful and no longer have a Python 3.5 available.
+
+    Instead switch to using pyenv in docker and compiler our own Python
+    versions. This should make it easier to swtich distros in the future.
+
+    Also adds a run-docker.sh script which builds the image and
+    runs it with the git repo mounted. This should make local testing
+    easier in the future.
+
+ .gitlab-ci.yml            | 12 +++++++---
+ .gitlab-ci/Dockerfile     | 60
+ ++++++++++++++++++++++++++++-------------------
+ .gitlab-ci/run-docker.sh  |  7 ++++++
+ .gitlab-ci/test-docker.sh | 11 +++++----
+ 4 files changed, 58 insertions(+), 32 deletions(-)
+
+commit 7bc20fe2d1225bebb2f4ec1faabf6a70e4e5a4e7
+Author: Mikhail Fludkov <misha@pexip.com>
+Date:   Thu Feb 8 12:49:01 2018 +0100
+
+    tests: Make tests run without Gtk/Gdk installed
+
+    Python evaluates the code inside @unittest.skipIf decorator during
+    import time. Because Gtk is not installed it crashes while evaluating
+    'Gtk._version' where Gtk=None.
+
+ tests/test_ossig.py         | 10 ++++++---
+ tests/test_overrides_gdk.py | 17 +++++++--------
+ tests/test_overrides_gtk.py | 50
+ +++++++++++++++++++++++----------------------
+ 3 files changed, 42 insertions(+), 35 deletions(-)
+
+commit d371fd77d33c2987cc450bd68ce4ee4835e09bd8
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Thu Feb 8 09:02:37 2018 +0100
+
+    Revert "to-py-struct: don't copy the boxed if we are the sole owner
+    of the wrapper"
+
+    This reverts commit a4a68b3c7a4bb64c71e1bdbe52ede109b6bcd0bb.
+
+    This was wrong. In the context of a boxed return value we also have
+    only one
+    ref but it doesn't get freed after.
+
+    We could decide this based on PYGI_CALLING_CONTEXT_IS_FROM_C from
+    the callable cache,
+    but let's leave that for now.
+
+ gi/pygi-struct-marshal.c | 11 ++---------
+ tests/test_everything.py |  2 --
+ 2 files changed, 2 insertions(+), 11 deletions(-)
+
+commit 024ac583538976330b429b9b203d412fec0426e3
+Author: Mikhail Fludkov <fludkov.me@gmail.com>
+Date:   Tue Feb 6 15:24:17 2018 +0100
+
+    tests: test_boxed_c_wrapper failing tests
+
+    Introduced here 1ec8d58
+
+ setup.py                 |  2 ++
+ tests/Makefile.am        |  8 +++++---
+ tests/regressextra.c     | 51
+ ++++++++++++++++++++++++++++++++++++++++++++++++
+ tests/regressextra.h     | 17 ++++++++++++++++
+ tests/test_everything.py | 31 +++++++++++++++++++++++++++++
+ 5 files changed, 106 insertions(+), 3 deletions(-)
+
+commit aab23dbdb38c5c316c1939410e0301aa8b262143
+Author: Mikhail Fludkov <fludkov.me@gmail.com>
+Date:   Wed Feb 7 16:03:42 2018 +0100
+
+    gi/pygtype.c: avoid GIL congestion in pyg_type_lookup
+
+    https://gitlab.gnome.org/GNOME/pygobject/issues/123
+
+    GIL congestion can be caused when many threads emit signals with
+    objects of
+    boxed type up to Python. The code in pyg_type_lookup imports a
+    python module
+    corresponding to gtype, which is expensive and can cause GIL
+    congestion. What
+    the proposed patch of pyg_type_lookup does:
+
+    - pygi_type_import_by_g_type is called only once per a gtype
+    - early NULL return. For example GStreamer types benefit greatly
+    from it.
+      Because pyg_register_gtype_custom is not used and pyg_type_lookup
+      always
+      returns NULL for such types.
+
+ gi/pygtype.c | 41 ++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 36 insertions(+), 5 deletions(-)
+
+commit 080e1a8e8c130a94b5662770621dea2ad1646b3a
+Author: Mikhail Fludkov <fludkov.me@gmail.com>
+Date:   Wed Feb 7 16:36:26 2018 +0100
+
+    Use optimized version of PyImport_ImportModule
+
+    https://gitlab.gnome.org/GNOME/pygobject/issues/123
+
+    You would expect PyImport_ImportModule to import a module once, store
+    it's reference to sys.modules and the next time we call it with
+    the same
+    argument reuse the reference from sys.module. But it is not what is
+    happening unfortunately.
+
+    Everytime we call it it releases GIL, grabs global python import lock,
+    grabs GIL back. The proposed optimization looks at sys.modules
+    first and
+    uses the reference from there to avoid GIL congestion. pyg_type_lookup
+    is
+    a good example of a function which imports python modules at run
+    time and
+    can cause GIL congestion.
+
+ gi/pygi-error.c           |  2 +-
+ gi/pygi-info.c            |  2 +-
+ gi/pygi-type.c            |  2 +-
+ gi/pyglib-python-compat.h | 17 +++++++++++++++++
+ 4 files changed, 20 insertions(+), 3 deletions(-)
+
+commit ee79fef18748ad660d3a0471ed9a18ea11410849
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Wed Feb 7 11:55:54 2018 +0100
+
+    version bump
+
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 7f678500a9edad6218911dc7d81e0bc057c58326
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Wed Feb 7 11:35:13 2018 +0100
+
+    release
+
+ NEWS | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 07993bb18195f19a07cdda3ba47b231b02863e2b
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Wed Feb 7 09:41:58 2018 +0100
+
+    docs: add pypi step to maintainer release list
+
+ docs/maintguide.rst | 2 ++
+ 1 file changed, 2 insertions(+)
+
+commit f7a8711d16de226aec1496c366fba1c6434b4218
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Wed Feb 7 09:36:50 2018 +0100
+
+    docs: getting started: default to Python 3 everywhere
+
+ docs/getting_started.rst | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+commit 1330712bcf8109090bacf0cdfbba0c2a47930ac9
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Wed Feb 7 09:35:08 2018 +0100
+
+    docs: update building/testing with new setup.py features
+
+ docs/devguide/building_testing.rst | 45
+ +++++++++++++++++++++-----------------
+ 1 file changed, 25 insertions(+), 20 deletions(-)
+
+commit e6ffd8f37c83d2627086207192030975dee44bd7
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Wed Feb 7 00:55:54 2018 +0100
+
+    Update NEWS
+
+ NEWS | 26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
+
+commit e56975aaf9bb976397b5961b7b34adcdd91b5a94
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Tue Feb 6 23:04:18 2018 +0100
+
+    gitlab-ci: adjust PKG_CONFIG_PATH for pycairo
+
+    pycairo git now installs things into $prefix/lib/pkgconfig
+
+ .gitlab-ci/test-docker.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 4b315835f7006655fe9fa23c02ec6096478114e5
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Tue Feb 6 18:32:13 2018 +0100
+
+    setup.py: use dbus-run-session for tests if available
+
+    Like we do with "make check"
+
+ setup.py | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
+
+commit e36797f6ea971bffe5cd55065e43e233644c3e0a
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Tue Feb 6 18:16:58 2018 +0100
+
+    setup.py: remove wrong comment about share lib extenions in distutils
+
+    It just happened to work with MinGW Python3 as that is patched to use
+    .dll for Python extenions by default. Forcing a different extension
+    here is needed as distutils is targeted at building extensions and
+    not shared libs.
+
+ setup.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 05159327eb70a75bc876a2355f5f31c6d424c1d5
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Tue Feb 6 18:15:05 2018 +0100
+
+    build: remove libdir from the .pc file
+
+    It's unused afaics and in the distutils case we can't replicated
+    what autotools does, so better remove it.
+
+ pygobject-3.0.pc.in | 1 -
+ setup.py            | 1 -
+ 2 files changed, 2 deletions(-)
+
+commit 1de81a939711b9c2edb915b8bd9855ef9db12f02
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Tue Feb 6 18:14:08 2018 +0100
+
+    setup.py: install .pc file into libdir
+
+    To match what the autotools build does.
+
+ setup.py | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+commit 32771e7509a266d5cafbfb0965b018ad8c87c530
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Tue Feb 6 00:16:57 2018 +0100
+
+    tests: skip some more tests on macOS
+
+    I haven't looked into why, but my hope is that this makes tests
+    pass on travis-ci, so we have a starting point and can at least
+    catch regression in an automated fashion.
+
+ tests/test_glib.py          | 1 +
+ tests/test_overrides_gtk.py | 1 +
+ 2 files changed, 2 insertions(+)
+
+commit 3d4bc64461c7c59f5e4aaabe7f2752d6ece83ed0
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Mon Feb 5 22:55:04 2018 +0100
+
+    setup.py: convince distutils to build dylibs on macOS
+
+    This makes the "build_tests" command work
+
+ setup.py | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+commit a153be8a6d79f52f1a45e2241e1fca5bd0aba6ea
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Mon Feb 5 10:49:55 2018 +0100
+
+    setup.py: rework pycairo header lookup and use new pycairo API when
+    available. See #150
+
+    pycairo git/next version now has a get_include() function which
+    gives us the
+    include path matching the Python module in all cases.
+
+    Rework the lookup code to try that API if possible and fall back to
+    the old
+    way. Also add logging everywhere so it's easier to debug if there
+    is still
+    something wrong.
+
+ setup.py | 132
+ ++++++++++++++++++++++++++++++++++++++++++---------------------
+ 1 file changed, 88 insertions(+), 44 deletions(-)
+
+commit 9a3958d30f8eeaf3cf5ad03c30a1915683ce4e6c
+Merge: 8811bfc6 a4a68b3c
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Thu Feb 1 08:24:50 2018 +0000
+
+    Merge branch 'dont-copy-unowned-boxed' into 'master'
+
+    to-py-struct: don't copy the boxed if we are the sole owner of
+    the wrapper
+
+    See merge request GNOME/pygobject!14
+
+commit a4a68b3c7a4bb64c71e1bdbe52ede109b6bcd0bb
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Tue Jan 30 16:39:18 2018 +0100
+
+    to-py-struct: don't copy the boxed if we are the sole owner of
+    the wrapper
+
+    In commit 7ed8191818733b9130bce84f78 things were changed to copy the
+    wrapped boxed after the Python function returned. In case the wrapper
+    is only used during the call there is no need to copy the boxed
+    as the wrapper will be freed anyway.
+
+    Add a special case and don't copy the boxed in case the refcount at
+    cleanup is only 1. This should speed up the common case.
+
+    thanks to @mathieudu for suggesting this
+
+ gi/pygi-struct-marshal.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+
+commit 8811bfc695a8513e49cfc8ba1e304a3ed0814fa9
+Merge: 0dca3f4f 1fbf74eb
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Tue Jan 30 14:46:40 2018 +0000
+
+    Merge branch 'property_fix' into 'master'
+
+    gobjectmodule: do not clear floating flag in set_/get_property
+
+    See merge request GNOME/pygobject!8
+
+commit 0dca3f4f577c540d8e09097b6e414708c8d54108
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Tue Jan 30 14:05:24 2018 +0100
+
+    setup.py: test: also run compat_test_pygtk tests
+
+ setup.py | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+commit 94904a17fb65b5174aca58c9e8ed6ebd50bc6cb3
+Merge: 1ec8d58e fd9e24a7
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Mon Jan 29 16:26:11 2018 +0000
+
+    Merge branch 'gitlabissue158' into 'master'
+
+    pygobject-object: fix memory corruption around list of closures
+
+    See merge request GNOME/pygobject!12
+
+commit fd9e24a73acde7313fbf96c946f4ce8dad130b33
+Author: Mikhail Fludkov <fludkov.me@gmail.com>
+Date:   Mon Jan 29 14:23:37 2018 +0100
+
+    pygobject-object: fix memory corruption around list of closures
+
+    https://gitlab.gnome.org/GNOME/pygobject/issues/158
+
+    The memory corruption occurs because of the race while accessing
+    PyGObjectData->closures list.
+
+    Protect PyGObjectData->closures by GIL in pygobject_unwatch_closure.
+    Despite the fact that we don't call any Python API in the function. We
+    use
+    GIL to be sure that PyGObjectData->closures list stays intact while
+    GC iterating the list inside pygobject_traverse. Otherwise we can
+    segfault while trying to call 'visit' function on an object that
+    was just freed in pygobject_unwatch_closure.
+
+ gi/pygobject-object.c |  5 +++++
+ tests/test_signal.py  | 50
+ ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 55 insertions(+)
+
+commit 1ec8d58e879a3802f54190be3cdc23bd976ca01f
+Merge: 8c8dd210 7ed81918
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Mon Jan 29 11:40:40 2018 +0000
+
+    Merge branch 'fix_boxed_copies' into 'master'
+
+    Fix boxed copies
+
+    See merge request GNOME/pygobject!10
+
+commit 8c8dd210f7cb2001144dc00ab6adde9e840e5dcf
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Thu Jan 25 17:13:15 2018 +0100
+
+    setup.py: set zip_safe=False
+
+    We install .h/.pc files now and zipping them could be problematic,
+    so better don't allow it.
+
+ setup.py | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit 06f981d83bb6f4b7d6043e9ee04277fcc2631d91
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Thu Jan 25 16:33:29 2018 +0100
+
+    setup.py: Install the pkg-config file
+
+    Skip installation when a wheel is built as it doesn't allow including
+    absolute paths and the .pc does.
+
+    Remove LIBFFI_PC as it's always the same.
+
+ configure.ac        |  2 --
+ pygobject-3.0.pc.in |  2 +-
+ setup.py            | 85
+ +++++++++++++++++++++++++++++++++++++++++++++++++----
+ 3 files changed, 80 insertions(+), 9 deletions(-)
+
+commit db78f98b0133102d77111c595df59f930e9b1c63
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Thu Jan 25 15:57:38 2018 +0100
+
+    setup.py: Install the header file
+
+ setup.py | 3 +++
+ 1 file changed, 3 insertions(+)
+
+commit 200a9c940d9bf5b0104cedc96c94c55867aac440
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Thu Jan 25 15:42:04 2018 +0100
+
+    setup.py: Add logging for pycairo lookup and fail early if the header
+    isn't found. See #150
+
+    Log the pycairo module we find and the include path we deduce
+    from that.
+    Also check that the directory actually includes the right header file
+    instead of letting the compiler fail later on.
+
+    This will hopefully make it more clear why installing through pip
+    isn't working
+    in some cases (see #150 for some reports)
+
+ setup.py | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
+
+commit 1fbf74eb06bbe2868fd40ea9f3fc1addc27e4bc3
+Author: Mathieu Duponchelle <mathieu@centricular.com>
+Date:   Sat Jan 20 04:44:46 2018 +0100
+
+    gobjectmodule: do not clear floating flag in set_/get_property
+
+ gi/gobjectmodule.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+commit f2100902c6fdfd6a3daaab39d3325ffc9ada9a7d
+Author: Mathieu Duponchelle <mathieu@centricular.com>
+Date:   Sun Jan 21 19:17:10 2018 +0100
+
+    gi/types: make it possible to resolve ambiguous vmethod names
+
+    Related to https://gitlab.gnome.org/GNOME/pygobject/issues/105,
+    but the method exposed to resolve the ambiguities does not
+    use a decorator, as a decorator cannot rename the function it
+    wraps, which means that users will have to provide different names
+    if they want to implement ambiguous methods from multiple base
+    classes.
+
+    Instead, ambiguities can be resolved by implementing methods named
+    do_$namespaced_base_class_name_$vfunc_name, eg:
+
+    do_gst_base_src_query
+
+ gi/types.py | 50 ++++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 36 insertions(+), 14 deletions(-)
+
+commit 7ed8191818733b9130bce84f782dc6f8f734abf7
+Author: Mathieu Duponchelle <mathieu@centricular.com>
+Date:   Tue Jan 23 15:58:38 2018 +0100
+
+    to python struct marshalling: copy boxed during cleanup
+
+    If the boxed was passed with transfer nothing, we need to
+    make a copy of it in the boxed wrapper, this in order
+    to have a valid reference, but still let closures modify
+    the original reference while it is valid (during the closure)
+
+    This fixes an expected failure in the tests, that was added
+    by https://bugzilla.gnome.org/show_bug.cgi?id=722899, first fixed
+    by https://bugzilla.gnome.org/show_bug.cgi?id=726999 and broken
+    in the preceding commits.
+
+ gi/pygi-struct-marshal.c | 34 +++++++++++++++++++++++++++-------
+ tests/test_gi.py         |  1 -
+ 2 files changed, 27 insertions(+), 8 deletions(-)
+
+commit 80eab029ce4e181624d7b845a4b517051797080d
+Author: Mathieu Duponchelle <mathieu@centricular.com>
+Date:   Tue Jan 23 15:57:04 2018 +0100
+
+    to python marshalling: collect cleanup data
+
+    Similar to what is done for marshalling from python, we
+    collect cleanup data that will then be passed on to the
+    cleanup function.
+
+ gi/pygi-array.c               | 24 ++++++++++++++++++------
+ gi/pygi-basictype.c           |  8 +++++---
+ gi/pygi-basictype.h           |  3 ++-
+ gi/pygi-cache.h               | 13 ++++++++++---
+ gi/pygi-closure.c             |  9 +++++++--
+ gi/pygi-enum-marshal.c        |  6 ++++--
+ gi/pygi-error.c               |  3 ++-
+ gi/pygi-hashtable.c           | 13 +++++++++----
+ gi/pygi-invoke-state-struct.h |  3 +++
+ gi/pygi-invoke.c              | 17 +++++++++++++----
+ gi/pygi-list.c                | 38 +++++++++++++++++++++++++++++++-------
+ gi/pygi-marshal-cleanup.c     | 13 ++++++++-----
+ gi/pygi-object.c              |  8 +++++---
+ gi/pygi-struct-marshal.c      |  5 +++--
+ 14 files changed, 120 insertions(+), 43 deletions(-)
+
+commit 9d96df1ea3ad533885fbcae4de693a3cd81e765a
+Author: Mathieu Duponchelle <mathieu@centricular.com>
+Date:   Tue Jan 23 14:15:19 2018 +0100
+
+    pygi-boxed: make in-place copy safer
+
+    Making sure we don't attempt to g_boxed_copy a NULL pointer,
+    as this is explicitly disallowed, and setting slice-allocated
+    to FALSE once g_slice_free has been called.
+
+ gi/pygi-boxed.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+commit daefdfa3e4dc97b4ae38250358d722f09764cc9b
+Author: Mathieu Duponchelle <mathieu@centricular.com>
+Date:   Sun Jan 21 19:23:19 2018 +0100
+
+    Revert "Refactor boxed wrapper memory management strategy"
+
+    This reverts commit 85175047e66dfc0c0263eac91d8056a95d0a60a0.
+
+ gi/gimodule.c            |  6 +---
+ gi/overrides/GLib.py     |  4 +++
+ gi/overrides/GObject.py  |  3 --
+ gi/pygi-boxed.c          | 32 +++++---------------
+ gi/pygi-boxed.h          |  4 +--
+ gi/pygi-property.c       |  6 +++-
+ gi/pygi-source.c         |  6 ++--
+ gi/pygi-struct-marshal.c | 78
+ ++++--------------------------------------------
+ tests/test_gi.py         |  1 +
+ tests/test_source.py     |  8 ++---
+ 10 files changed, 29 insertions(+), 119 deletions(-)
+
+commit b0fbb13783a2ece048a812b233e1fad15c5b8a31
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Tue Jan 23 00:27:32 2018 +0100
+
+    setup.py: default to Python 3
+
+    autotools defaults to Python 3 as well, so do the same for
+    distutils.
+
+ setup.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit f59ba1ae65876df786458f785558f96d8b400c9a
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Mon Jan 22 23:09:10 2018 +0100
+
+    setup.py: Make the test command work under MSYS2
+
+    gobject-introspection requires an import lib (.dll.a) on Windows,
+    so build that as well.
+
+    Disable the dbus tests until we have a temp bus like with autotools.
+    Unset MSYSTEM to disable the os.sep hackery.
+
+    This hit a bug in GI for the mingw+no-libtool case, see
+    https://bugzilla.gnome.org/show_bug.cgi?id=791902
+    The fix has been applied to MSYS2 in the meantime, see
+    https://github.com/Alexpux/MINGW-packages/pull/3308
+
+ .gitignore |  2 ++
+ setup.py   | 57 +++++++++++++++++++++++++++++++++++++++++++--------------
+ 2 files changed, 45 insertions(+), 14 deletions(-)
+
+commit 89d66dd0aa48aaef0a70aba8a17234bc188ef609
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Sun Jan 21 15:32:26 2018 +0100
+
+    setup.py: add a "quality" command
+
+    This just calls flake8 internally
+
+ setup.py | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+commit efb19909ebf15c8bdbd0b4acfe0046a512ba3b82
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Sat Jan 20 12:22:41 2018 +0100
+
+    gitlab-ci: switch to a non-srcdir build
+
+ .gitlab-ci/test-docker.sh | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+commit 722ef028739b1e3e585f49418a98efa98834bc02
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Fri Jan 19 20:34:04 2018 +0100
+
+    autotools: use flake8 instead of pep8/pyflakes
+
+    flake8 uses pep8/pycodestyle/pyflakes internally, so there should not
+    by any difference.
+
+    The nice thing about it is that we can store the configuration in
+    setup.cfg and linting comes down to just executing "flake8".
+    It also allows to ignore warnings with inline comments, so that
+    when avoiding a warning isn't possible it doesn't need to be disabled
+    for the whole codebase.
+
+ .gitlab-ci/test-docker.sh          |  2 +-
+ MANIFEST.in                        |  1 +
+ Makefile.am                        | 19 +++----------------
+ docs/devguide/building_testing.rst |  2 +-
+ setup.cfg                          |  3 +++
+ 5 files changed, 9 insertions(+), 18 deletions(-)
+
+commit 162b6ab75d3c3d1717245f5957433b8cf400b17a
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Fri Jan 19 20:08:31 2018 +0100
+
+    gitlab-ci: Install pep8 package, "make check.quality" requires it
+
+    While pep8 is replaced by pycodestyle, the "make check.quality"
+    command still uses pep8. Install it for now and fix some warnings
+    which slipped through due to pep8 not running.
+
+ .gitlab-ci/test-docker.sh    | 2 +-
+ gi/overrides/GLib.py         | 5 +++--
+ tests/test_overrides_glib.py | 1 -
+ 3 files changed, 4 insertions(+), 4 deletions(-)
+
+commit c365cc9c14a001dcbe294375d322a02401a1814d
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Fri Jan 19 15:12:22 2018 +0100
+
+    Update NEWS
+
+    List the authors like before and link them to the gitlab user profile.
+
+ NEWS         | 7 +++++--
+ docs/conf.py | 1 +
+ 2 files changed, 6 insertions(+), 2 deletions(-)
+
+commit 2ccef77f240149891fe9e8f557c7afc951a91839
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Thu Jan 18 17:08:26 2018 +0100
+
+    setup.py: add a "test" command which is equal to "make check"
+    with autotools
+
+    Adds a "build_tests" command which builds all resources required
+    for testing.
+    It has some simple dependency awareness and only rebuilds if any of
+    the direct
+    sources have changed. Passing -f/--force will force a rebuild.
+
+    Adds a new "test" command which builds the main extension module in
+    the source
+    directory, runs "build_tests" and finally runs all tests.
+
+    Extends the "distcheck" command to run the tests after extracting
+    the source
+    distribution and run the distcheck command in the gitlab CI script.
+
+    Only tested on Linux.
+
+ .gitlab-ci/test-docker.sh          |   3 +
+ docs/devguide/building_testing.rst |  28 ++--
+ setup.py                           | 336
+ +++++++++++++++++++++++++++++++------
+ tests/runtests.py                  |   1 +
+ 4 files changed, 305 insertions(+), 63 deletions(-)
+
+commit 812cdbfec0c8c9866c339a5eb01268672514d447
+Author: Alberto Ruiz <aruiz@gnome.org>
+Date:   Thu Jan 18 18:29:33 2018 +0100
+
+    GVariant add support to maybe types
+
+    While adding support to maybe types I realized that the GVariant
+    override was replicating a lot of logic from GVariant to parse
+    format strings by itself. This patch simplifies the creation of
+    GVariants from Python types and relies on GVariantType to interpret
+    the format string and walk through its items.
+
+    This patch also expands test coverage for maybe types.
+
+ gi/overrides/GLib.py         | 164
+ ++++++++++++-------------------------------
+ tests/test_overrides_glib.py |  49 ++++++++++---
+ 2 files changed, 86 insertions(+), 127 deletions(-)
+
+commit 54059b93a5559a4ccf28fa8014cacabbcf140902
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Thu Jan 18 08:39:53 2018 +0100
+
+    Update NEWS
+
+ NEWS | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+commit e5a21f56cd375373741dcb2f2e8eefae349cffbc
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Mon Jan 15 20:44:27 2018 +0100
+
+    overrides: Fix Gtk.Adjustment.__init__ overrides not setting "value"
+    sometimes. Fixes #151
+
+    Gtk.Adjustment allows passing positional arguments to __init__
+    which get
+    translated to a dict for passing to GObject.Object.__init__. In case
+    of the
+    first argument "value", if "value" is passed before the upper and
+    lower bound to Object.__init__ it will be set to 0 instead.
+
+    In Python 2 this happened to work (at least on my machine) because
+    "value" got placed after the bounds (in terms of iteration order)
+    in the final dict value passed to Object.__init__.
+
+    To work around this, set "value" again after __init__().
+    A similar work around already exists when "value" is passed as
+    a kwarg.
+
+ gi/overrides/Gtk.py         | 2 ++
+ tests/test_overrides_gtk.py | 6 ++++++
+ 2 files changed, 8 insertions(+)
+
+commit 5cb3d7af47310d0b6174811d0d298e7d1869624c
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Mon Jan 15 18:02:39 2018 +0100
+
+    Update MANIFEST.in to include the CI scripts and config files
+
+    This fixes "setup.py distcheck", which makes sure all files in git end
+    up in the sdist.
+
+ MANIFEST.in | 2 ++
+ 1 file changed, 2 insertions(+)
+
+commit 74ad29c908447a4054dbd3427a09a1d44ff00f6d
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Fri Jan 12 09:49:36 2018 +0100
+
+    docs: Add Anaconda to the list of software that is using PyGObject
+
+    https://fedoraproject.org/wiki/Anaconda
+
+ docs/index.rst | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit 9fe7eb528c711e56ee58ce3b8a4d7b4270708d40
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Fri Jan 12 09:42:49 2018 +0100
+
+    docs: Add custom roles for linking to gitlab issues and merge requests
+
+    This allows one to use :issue:`42` or :mr:`42` in the documentation
+    and the NEWS file and will result in links pointing to the
+    specified issue/merge request.
+
+ docs/conf.py | 3 +++
+ 1 file changed, 3 insertions(+)
+
+commit 91a1ec0ef6e3cbfb6c83ae8e17564733c8e840f6
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Wed Jan 10 18:17:56 2018 +0100
+
+    docs: Update for the git repo move from git.gnome.org to
+    gitlab.gnome.org
+
+    Changes all the links to point to the gitlab instance.
+
+    Adds the gitlab setup to the sphinx theme configuration, so the theme
+    can show "Edit on GitLab" links on each page.
+
+    Create a new page pointing to the git report and bug tracker.
+    Someone on IRC mentioned that this info is hard to find, so try
+    to make
+    it more proiminent.
+
+ docs/bugs_repo.rst            | 31 +++++++++++++++++++++++++++++++
+ docs/changelog.rst            |  3 ++-
+ docs/conf.py                  |  6 ++++++
+ docs/devguide/dev_environ.rst |  4 ++--
+ docs/devguide/overview.rst    | 24 ++++--------------------
+ docs/guide/porting.rst        |  2 +-
+ docs/index.rst                |  1 +
+ 7 files changed, 47 insertions(+), 24 deletions(-)
+
+commit adf5e51ccf9d9dbf938c0da496e0d4d81d3284f6
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Fri Dec 22 16:34:53 2017 +0100
+
+    Add gitlab CI tests
+
+    Adds a Dockerfile which is available on the docker hub
+    and gets used by the gitlab test runner.
+
+    The tests get executed in an Ubuntu 17.04 image for various Python
+    versions and consist of building, testing, code quality testing and
+    documentation build testing.
+
+ .gitlab-ci.yml            | 22 ++++++++++++++++++++++
+ .gitlab-ci/Dockerfile     | 32 ++++++++++++++++++++++++++++++++
+ .gitlab-ci/README.rst     |  1 +
+ .gitlab-ci/test-docker.sh | 30 ++++++++++++++++++++++++++++++
+ 4 files changed, 85 insertions(+)
+
+commit 661e64ce6091724b86a934268daa2c80bda46eb5
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Thu Dec 21 12:33:07 2017 +0100
+
+    docs: Include NEWS entries for releases not made on the master branch
+
+    So that every release is visible in the online documentation.
+    The list is sorted by release date.
+
+ NEWS               | 335
+ +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ docs/changelog.rst |   3 +-
+ 2 files changed, 337 insertions(+), 1 deletion(-)
+
+commit a109b4c96537e8ba3062a56699f3aefc63c82d6d
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Wed Dec 20 15:59:05 2017 +0100
+
+    docs: convert NEWS file to reST and link bugs
+
+    Looks nicer in the online docs and makes it easier to look
+    up bugs and link to specific releases.
+
+    Rename the custom reST role for bugs from gnomebug to bzbug.
+    With the upcoming move to gitlab that makes it more clear that those
+    are referencing bugzilla.
+
+    Adjust the "make release-news" target to output something similar
+    to the new format to make converting to reST easier.
+
+    Update the maintainer release todo list to state that the changelog
+    should be copied from stable branches to master. It would be
+    nice if the NEWS file in master, which gets exposed on readthedocs,
+    would contain all the information available.
+
+ Makefile.am                           |    4 +-
+ NEWS                                  | 5171
+ +++++++++++++++++----------------
+ docs/Makefile                         |    2 +-
+ docs/changelog.rst                    |    1 -
+ docs/conf.py                          |    2 +-
+ docs/devguide/override_guidelines.rst |   14 +-
+ docs/maintguide.rst                   |    2 +
+ 7 files changed, 2712 insertions(+), 2484 deletions(-)
+
+commit df77beb730c336e5fdc87f4225af0842edfbe56a
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Mon Dec 11 18:50:22 2017 +0100
+
+    version bump
+
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 22ef18884d1c7cb5b9ba68ef78489bb779a347b3
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Mon Dec 11 18:40:47 2017 +0100
+
+    release 3.27.1
+
+ NEWS | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+commit 2e30c7fbfcb579efb2ff7134979f169f673ac285
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Mon Dec 11 18:32:16 2017 +0100
+
+    Revert "setup.py: Also set setup_requires to require pycairo"
+
+    This reverts commit bab1cb0d98e4a6219332394161dbf07aafa0c615.
+
+    pycairo gets installed under /tmp as an .egg this way, and that
+    doesn't help us
+    with finding the C headers.
+
+ setup.py | 4 ----
+ 1 file changed, 4 deletions(-)
+
+commit bab1cb0d98e4a6219332394161dbf07aafa0c615
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Mon Dec 11 16:26:54 2017 +0100
+
+    setup.py: Also set setup_requires to require pycairo
+
+    We need pycairo at build time. There are some problems with
+    setup_requires
+    in that it isn't directly handled by pip, but let's give it a try
+    and see
+    which problems come up.
+
+    Thanks to mgedmin for pointing that out
+
+ setup.py | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+commit 47aeaab6142a716234e91e8bbc3adefeff9ff5c3
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Mon Dec 11 16:14:34 2017 +0100
+
+    setup.py: Provide a os.path.samefile fallback for Python 2 under
+    Windows
+
+    os.path.samefile is missing from Python 2 under Windows. Implement a
+    simple fallback which normalizes and compares paths instead.
+
+ setup.py | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
+
+commit dfab41d0b66a15c8cf8229f7522160ec6b08a2b8
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Sun Dec 10 20:38:47 2017 +0100
+
+    Add sphinx based documentation
+
+    Takes the documentation developed at
+    https://github.com/pygobject/pygobject-docs
+    and puts into /docs
+
+    See https://pygobject.readthedocs.io for how it looks
+
+    Now that we move to gitlab we can use webhooks to trigger builds
+    on readthedocs from gitlab directly and we should also have a nicer
+    contribution UX.
+
+    This also gets rid of most of README/HACKING/INSTALL and moves most
+    of the information into the documentation. The README is kept short
+    and only makes clear what pygobject is and points to the online docs
+    as that should answer all questions.
+
+    setup.py now sets the content of README.rst as long_descriptions,
+    as that is the content shown on PyPI. This makes the page on PyPI
+    look the same as on gitlab.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=791448
+
+ .gitignore                              |   2 +
+ HACKING                                 |  37 ----
+ INSTALL                                 | 370
+ --------------------------------
+ MANIFEST.in                             |   3 +-
+ Makefile.am                             |   5 +-
+ README.rst                              | 137 ++----------
+ docs/Makefile                           |  16 ++
+ docs/changelog.rst                      |  10 +
+ docs/conf.py                            |  50 +++++
+ docs/contact.rst                        |  11 +
+ docs/devguide/building_testing.rst      |  56 +++++
+ docs/devguide/dev_environ.rst           |  46 ++++
+ docs/devguide/index.rst                 |  13 ++
+ docs/devguide/override_guidelines.rst   |  90 ++++++++
+ docs/devguide/overview.rst              |  32 +++
+ docs/devguide/style_guide.rst           | 101 +++++++++
+ docs/extra.css                          |  57 +++++
+ docs/further.rst                        |  10 +
+ docs/getting_started.rst                | 128 +++++++++++
+ docs/guide/api/api.rst                  |  75 +++++++
+ docs/guide/api/basic_types.rst          |  53 +++++
+ docs/guide/api/flags_enums.rst          |  39 ++++
+ docs/guide/api/gobject.rst              |  91 ++++++++
+ docs/guide/api/index.rst                |  12 ++
+ docs/guide/api/properties.rst           | 119 ++++++++++
+ docs/guide/api/signals.rst              |  93 ++++++++
+ docs/guide/cairo_integration.rst        |  39 ++++
+ docs/guide/code/cairo-demo.py           | 133 ++++++++++++
+ docs/guide/debug_profile.rst            | 112 ++++++++++
+ docs/guide/deploy.rst                   |  52 +++++
+ docs/guide/faq.rst                      |  11 +
+ docs/guide/images/cairo_integration.png | Bin 0 -> 24418 bytes
+ docs/guide/index.rst                    |  17 ++
+ docs/guide/porting.rst                  | 109 ++++++++++
+ docs/guide/testing.rst                  |  39 ++++
+ docs/guide/threading.rst                | 290 +++++++++++++++++++++++++
+ docs/icons.rst                          |  48 +++++
+ docs/images/LICENSE                     |   3 +
+ docs/images/favicon.ico                 | Bin 0 -> 34494 bytes
+ docs/images/logo.svg                    | 266 +++++++++++++++++++++++
+ docs/images/overview.dia                | Bin 0 -> 1885 bytes
+ docs/images/overview.svg                |  72 +++++++
+ docs/images/pygobject-small.svg         | 193 +++++++++++++++++
+ docs/images/pygobject.svg               | 244 +++++++++++++++++++++
+ docs/images/start_linux.png             | Bin 0 -> 9893 bytes
+ docs/images/start_macos.png             | Bin 0 -> 13949 bytes
+ docs/images/start_windows.png           | Bin 0 -> 11454 bytes
+ docs/index.rst                          |  89 ++++++++
+ docs/maintguide.rst                     |  32 +++
+ docs/packagingguide.rst                 |  55 +++++
+ setup.py                                |   6 +-
+ 51 files changed, 2933 insertions(+), 533 deletions(-)
+
+commit 307e64982fdfcc9b505d867c0628e1e0a189cd67
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Sun Dec 10 16:23:45 2017 +0100
+
+    PKG-INFO: Revert name back to PyGObject
+
+    My thinking there was that it gives us the same naming of tarballs
+    as with the autotools build system. But on a second thought, we
+    can't use the same tarball anyway due to gz vs xz and while the
+    naming should be case insensitive it's not worth the risk.
+
+    The commit changing it was 3e455944f5835c7509
+
+ PKG-INFO.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit eb20f3c9f062fe25a44068ccab46475c4cb5e523
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Sun Dec 10 16:17:28 2017 +0100
+
+    setup.py: Rework pycairo discovery to not use pkg-config
+
+    Two problems with the previous approach:
+
+    * We looked into sys.prefix for the .pc file while the package
+      could be installed in another location like the user dir location
+      or on Debian it goes into /usr/local.
+    * The .pc file intalled by pycairo can contain wrong paths if
+      installed through pip, since that sometimes builds a wheel
+      and caches that for future installations to different locations.
+
+    Instead of using the .pc file use pkg_resources to discover the
+    pycairo location and then try to find the correspinding "data"
+    installation
+    path for the first  matching location scheme.
+
+    See https://github.com/pygobject/pycairo/issues/85
+
+ setup.py | 44 +++++++++++++++++++++++++++-----------------
+ 1 file changed, 27 insertions(+), 17 deletions(-)
+
+commit de2ff6e883015741527638ab5cece47a97ef2856
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Sat Dec 9 15:59:26 2017 +0100
+
+    setup.py: Fix the distcheck command on Windows
+
+    The distutils install command complains if the passed root/record
+    paths
+    aren't absolute on Windows.
+    Also make use of os.path.join() while at it.
+
+ setup.py | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+commit 46225bf34fc5737ca5b8e9fd9a0029e6f4a8b302
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Sat Dec 9 15:55:39 2017 +0100
+
+    setup.py: Remove various classifiers and the download-url which
+    aren't accepted by pypi
+
+    pypi does not allow uploading packages with these set, so remove
+    them altogether.
+
+ PKG-INFO.in | 5 -----
+ setup.py    | 1 -
+ 2 files changed, 6 deletions(-)
+
+commit bf884345be38f1ebd53fbe891841348b8485dac0
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Fri Dec 8 20:34:18 2017 +0100
+
+    version bump
+
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit f8801c24993e9b7b9abc65e32d1a851c7ed09649
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Fri Dec 8 20:31:17 2017 +0100
+
+    release 3.27.0
+
+ NEWS | 34 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 34 insertions(+)
+
+commit eb2ff4362878d0e348c67c606a32e8d332e2454d
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Fri Dec 8 16:56:10 2017 +0100
+
+    demo: pep8 fixes
+
+    The demo app now gets analyzed by pep8 since it was moved to the
+    examples.
+
+ examples/demo/demos/Css/css_accordion.py           |    1 +
+ examples/demo/demos/Entry/entry_buffer.py          |    1 +
+ examples/demo/demos/Entry/entry_completion.py      |    1 +
+ examples/demo/demos/Entry/search_entry.py          |    1 +
+ examples/demo/demos/IconView/iconviewbasics.py     |    1 +
+ examples/demo/demos/IconView/iconviewedit.py       |    1 +
+ examples/demo/demos/TreeView/liststore.py          |    2 +
+ examples/demo/demos/TreeView/treemodel_filelist.py |    1 +
+ examples/demo/demos/TreeView/treemodel_filetree.py |    1 +
+ examples/demo/demos/appwindow.py                   |    1 +
+ examples/demo/demos/assistant.py                   |    1 +
+ examples/demo/demos/builder.py                     |    1 +
+ examples/demo/demos/button_box.py                  |    1 +
+ examples/demo/demos/clipboard.py                   |    1 +
+ examples/demo/demos/colorselector.py               |    1 +
+ examples/demo/demos/combobox.py                    |    1 +
+ examples/demo/demos/dialogs.py                     |    1 +
+ examples/demo/demos/drawingarea.py                 |   11 +-
+ examples/demo/demos/expander.py                    |    1 +
+ examples/demo/demos/flowbox.py                     | 1332
+ ++++++++++----------
+ examples/demo/demos/images.py                      |    1 +
+ examples/demo/demos/infobars.py                    |    1 +
+ examples/demo/demos/links.py                       |    1 +
+ examples/demo/demos/menus.py                       |    1 +
+ examples/demo/demos/pickers.py                     |    1 +
+ examples/demo/demos/pixbuf.py                      |    1 +
+ examples/demo/demos/printing.py                    |    1 +
+ examples/demo/demos/rotatedtext.py                 |    1 +
+ 28 files changed, 700 insertions(+), 670 deletions(-)
+
+commit af9ddf322f7cf377996b8fa29906bd4b254dc001
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Fri Dec 8 16:40:33 2017 +0100
+
+    Fix ctypes.PyDLL construction under Windows
+
+    We require the ctypes.pythonapi interface but can't use the global one
+    since we have to change it which could potentially break other users
+    of that interface.
+
+    Turns out simply passing None to PyDLL() only works on Unix to
+    load the
+    CPython library. Instead copy the logic from the ctypes module in the
+    stdlib.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=622084
+
+ gi/_ossighelper.py | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
+
+commit d19aca693950c0edb02b226db8bcf81a5304870e
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Fri Dec 8 14:40:58 2017 +0100
+
+    configure.ac: Error out in case autoconf-archive isn't installed
+
+    Check whether the AX_IS_RELEASE macro is defined and if not print
+    a proper error message.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=784428
+
+ configure.ac | 3 +++
+ 1 file changed, 3 insertions(+)
+
+commit 26001a6ae42f8e10ed4c44bc9414e219b946cee0
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Wed Dec 6 18:37:45 2017 +0100
+
+    Move pygi-convert.sh into tools
+
+ MANIFEST.in                              | 2 +-
+ Makefile.am                              | 2 +-
+ pygi-convert.sh => tools/pygi-convert.sh | 0
+ 3 files changed, 2 insertions(+), 2 deletions(-)
+
+commit dd1507be6c198319304342b73c8ec1ec2a102145
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Wed Dec 6 18:26:13 2017 +0100
+
+    README: Convert to reST
+
+ MANIFEST.in          |  2 +-
+ Makefile.am          |  3 ++-
+ README => README.rst | 56
+ ++++++++++++++++++++++++++++++++++------------------
+ 3 files changed, 40 insertions(+), 21 deletions(-)
+
+commit e4a52b9f99667df98806d0c4ee78c2909ead27e1
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Wed Dec 6 17:53:51 2017 +0100
+
+    demo: Move demo into examples and dist it
+
+    We might want to install it in the future, but until then at least put
+    it into the tarball.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=735918
+
+ MANIFEST.in                                                 |   3 +--
+ examples/Makefile.am                                        |   7 ++++++-
+ {demo => examples/demo}/demo.py                             |   0
+ {demo => examples/demo}/demos/Css/__init__.py               |   0
+ {demo => examples/demo}/demos/Css/css_accordion.py          |   0
+ {demo => examples/demo}/demos/Css/css_basics.py             |   0
+ {demo => examples/demo}/demos/Css/css_multiplebgs.py        |   0
+ {demo => examples/demo}/demos/Entry/__init__.py             |   0
+ {demo => examples/demo}/demos/Entry/entry_buffer.py         |   0
+ {demo => examples/demo}/demos/Entry/entry_completion.py     |   0
+ {demo => examples/demo}/demos/Entry/search_entry.py         |   0
+ {demo => examples/demo}/demos/IconView/__init__.py          |   0
+ {demo => examples/demo}/demos/IconView/iconviewbasics.py    |   0
+ {demo => examples/demo}/demos/IconView/iconviewedit.py      |   0
+ {demo => examples/demo}/demos/TreeView/__init__.py          |   0
+ {demo => examples/demo}/demos/TreeView/liststore.py         |   0
+ .../demo}/demos/TreeView/treemodel_filelist.py              |   0
+ .../demo}/demos/TreeView/treemodel_filetree.py              |   0
+ {demo => examples/demo}/demos/TreeView/treemodel_large.py   |   0
+ {demo => examples/demo}/demos/__init__.py                   |   0
+ {demo => examples/demo}/demos/appwindow.py                  |   0
+ {demo => examples/demo}/demos/assistant.py                  |   0
+ {demo => examples/demo}/demos/builder.py                    |   0
+ {demo => examples/demo}/demos/button_box.py                 |   0
+ {demo => examples/demo}/demos/clipboard.py                  |   0
+ {demo => examples/demo}/demos/colorselector.py              |   0
+ {demo => examples/demo}/demos/combobox.py                   |   0
+ {demo => examples/demo}/demos/data/alphatest.png            | Bin
+ {demo => examples/demo}/demos/data/apple-red.png            | Bin
+ {demo => examples/demo}/demos/data/background.jpg           | Bin
+ {demo => examples/demo}/demos/data/brick.png                | Bin
+ {demo => examples/demo}/demos/data/brick2.png               | Bin
+ {demo => examples/demo}/demos/data/css_accordion.css        |   0
+ {demo => examples/demo}/demos/data/css_basics.css           |   0
+ {demo => examples/demo}/demos/data/css_multiplebgs.css      |   0
+ {demo => examples/demo}/demos/data/cssview.css              |   0
+ {demo => examples/demo}/demos/data/demo.gresource           | Bin
+ {demo => examples/demo}/demos/data/demo.gresource.xml       |   0
+ {demo => examples/demo}/demos/data/demo.ui                  |   0
+ {demo => examples/demo}/demos/data/floppybuddy.gif          | Bin
+ {demo => examples/demo}/demos/data/gnome-applets.png        | Bin
+ {demo => examples/demo}/demos/data/gnome-calendar.png       | Bin
+ {demo => examples/demo}/demos/data/gnome-foot.png           | Bin
+ {demo => examples/demo}/demos/data/gnome-fs-directory.png   | Bin
+ {demo => examples/demo}/demos/data/gnome-fs-regular.png     | Bin
+ {demo => examples/demo}/demos/data/gnome-gimp.png           | Bin
+ {demo => examples/demo}/demos/data/gnome-gmush.png          | Bin
+ {demo => examples/demo}/demos/data/gnome-gsame.png          | Bin
+ {demo => examples/demo}/demos/data/gnu-keys.png             | Bin
+ {demo => examples/demo}/demos/data/gtk-logo-rgb.gif         | Bin
+ {demo => examples/demo}/demos/data/reset.css                |   0
+ {demo => examples/demo}/demos/dialogs.py                    |   0
+ {demo => examples/demo}/demos/drawingarea.py                |   0
+ {demo => examples/demo}/demos/expander.py                   |   0
+ {demo => examples/demo}/demos/flowbox.py                    |   0
+ {demo => examples/demo}/demos/images.py                     |   0
+ {demo => examples/demo}/demos/infobars.py                   |   0
+ {demo => examples/demo}/demos/links.py                      |   0
+ {demo => examples/demo}/demos/menus.py                      |   0
+ {demo => examples/demo}/demos/pickers.py                    |   0
+ {demo => examples/demo}/demos/pixbuf.py                     |   0
+ {demo => examples/demo}/demos/printing.py                   |   0
+ {demo => examples/demo}/demos/rotatedtext.py                |   0
+ {demo => examples/demo}/demos/test.py                       |   0
+ 64 files changed, 7 insertions(+), 3 deletions(-)
+
+commit f8ff3b5e0e769e6db1509426af28728129780529
+Author: Gian Mario Tagliaretti <gianmt@gnome.org>
+Date:   Thu Sep 4 08:51:10 2014 +0100
+
+    demo: Add new Gtk.FlowBox example
+
+    Added a new example for the Gtk.FlowBox class added in GTK+ 3.12.
+    This example additionally makes use of Gtk.HeaderBar.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=735918
+
+ demo/demos/flowbox.py | 750
+ ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 750 insertions(+)
+
+commit 3f4a176c77a8026949c04d85d0a822554c4c661c
+Author: Simon Feltman <sfeltman@src.gnome.org>
+Date:   Tue Sep 2 10:53:29 2014 -0700
+
+    demo: Use HeaderBar for main app window
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=735918
+
+ demo/demo.py | 23 +++++++++++------------
+ 1 file changed, 11 insertions(+), 12 deletions(-)
+
+commit 995f1e72eed0970d56d871ed8452c61f92a40696
+Author: Simon Feltman <sfeltman@src.gnome.org>
+Date:   Tue Sep 2 11:10:31 2014 -0700
+
+    demo: PyFlakes and PEP8 fixes
+
+    Since PyFlakes and PEP8 are not currently run on the demo due to it
+    not being packaged, manually check and fix this for now.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=735918
+
+ demo/demo.py                         | 2 +-
+ demo/demos/Entry/entry_buffer.py     | 2 +-
+ demo/demos/Entry/entry_completion.py | 2 +-
+ demo/demos/clipboard.py              | 6 +-----
+ demo/demos/combobox.py               | 2 +-
+ 5 files changed, 5 insertions(+), 9 deletions(-)
+
+commit 5d2ce69ed51aec62872ebb2a129c2b8a6b4256af
+Author: Simon Feltman <sfeltman@src.gnome.org>
+Date:   Tue Sep 2 11:01:55 2014 -0700
+
+    demo: Rename gtk-demo.py to demo.py
+
+    Remove GTK+ specificity which also allows the demo app to be used as
+    one of the demos itself.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=735918
+
+ demo/{gtk-demo.py => demo.py} | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 7e48d91a5e1f180cbe4adea41bd41939c26c77b0
+Author: Simon Feltman <sfeltman@src.gnome.org>
+Date:   Mon Sep 1 22:04:29 2014 -0700
+
+    demo: Rename demos/gtk-demo to simply demo
+
+    Move the entire "pygobject/demos/gtk-demo" folder to "pygobject/demo".
+    Since we only have a single demo app which should be used for all
+    platform demos we can remove the diectory obfuscation.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=735918
+
+ {demos/gtk-demo => demo}/demos/Css/__init__.py              |   0
+ {demos/gtk-demo => demo}/demos/Css/css_accordion.py         |   0
+ {demos/gtk-demo => demo}/demos/Css/css_basics.py            |   0
+ {demos/gtk-demo => demo}/demos/Css/css_multiplebgs.py       |   0
+ {demos/gtk-demo => demo}/demos/Entry/__init__.py            |   0
+ {demos/gtk-demo => demo}/demos/Entry/entry_buffer.py        |   0
+ {demos/gtk-demo => demo}/demos/Entry/entry_completion.py    |   0
+ {demos/gtk-demo => demo}/demos/Entry/search_entry.py        |   0
+ {demos/gtk-demo => demo}/demos/IconView/__init__.py         |   0
+ {demos/gtk-demo => demo}/demos/IconView/iconviewbasics.py   |   0
+ {demos/gtk-demo => demo}/demos/IconView/iconviewedit.py     |   0
+ {demos/gtk-demo => demo}/demos/TreeView/__init__.py         |   0
+ {demos/gtk-demo => demo}/demos/TreeView/liststore.py        |   0
+ .../gtk-demo => demo}/demos/TreeView/treemodel_filelist.py  |   0
+ .../gtk-demo => demo}/demos/TreeView/treemodel_filetree.py  |   0
+ {demos/gtk-demo => demo}/demos/TreeView/treemodel_large.py  |   0
+ {demos/gtk-demo => demo}/demos/__init__.py                  |   0
+ {demos/gtk-demo => demo}/demos/appwindow.py                 |   0
+ {demos/gtk-demo => demo}/demos/assistant.py                 |   0
+ {demos/gtk-demo => demo}/demos/builder.py                   |   0
+ {demos/gtk-demo => demo}/demos/button_box.py                |   0
+ {demos/gtk-demo => demo}/demos/clipboard.py                 |   0
+ {demos/gtk-demo => demo}/demos/colorselector.py             |   0
+ {demos/gtk-demo => demo}/demos/combobox.py                  |   0
+ {demos/gtk-demo => demo}/demos/data/alphatest.png           | Bin
+ {demos/gtk-demo => demo}/demos/data/apple-red.png           | Bin
+ {demos/gtk-demo => demo}/demos/data/background.jpg          | Bin
+ {demos/gtk-demo => demo}/demos/data/brick.png               | Bin
+ {demos/gtk-demo => demo}/demos/data/brick2.png              | Bin
+ {demos/gtk-demo => demo}/demos/data/css_accordion.css       |   0
+ {demos/gtk-demo => demo}/demos/data/css_basics.css          |   0
+ {demos/gtk-demo => demo}/demos/data/css_multiplebgs.css     |   0
+ {demos/gtk-demo => demo}/demos/data/cssview.css             |   0
+ {demos/gtk-demo => demo}/demos/data/demo.gresource          | Bin
+ {demos/gtk-demo => demo}/demos/data/demo.gresource.xml      |   0
+ {demos/gtk-demo => demo}/demos/data/demo.ui                 |   0
+ {demos/gtk-demo => demo}/demos/data/floppybuddy.gif         | Bin
+ {demos/gtk-demo => demo}/demos/data/gnome-applets.png       | Bin
+ {demos/gtk-demo => demo}/demos/data/gnome-calendar.png      | Bin
+ {demos/gtk-demo => demo}/demos/data/gnome-foot.png          | Bin
+ {demos/gtk-demo => demo}/demos/data/gnome-fs-directory.png  | Bin
+ {demos/gtk-demo => demo}/demos/data/gnome-fs-regular.png    | Bin
+ {demos/gtk-demo => demo}/demos/data/gnome-gimp.png          | Bin
+ {demos/gtk-demo => demo}/demos/data/gnome-gmush.png         | Bin
+ {demos/gtk-demo => demo}/demos/data/gnome-gsame.png         | Bin
+ {demos/gtk-demo => demo}/demos/data/gnu-keys.png            | Bin
+ {demos/gtk-demo => demo}/demos/data/gtk-logo-rgb.gif        | Bin
+ {demos/gtk-demo => demo}/demos/data/reset.css               |   0
+ {demos/gtk-demo => demo}/demos/dialogs.py                   |   0
+ {demos/gtk-demo => demo}/demos/drawingarea.py               |   0
+ {demos/gtk-demo => demo}/demos/expander.py                  |   0
+ {demos/gtk-demo => demo}/demos/images.py                    |   0
+ {demos/gtk-demo => demo}/demos/infobars.py                  |   0
+ {demos/gtk-demo => demo}/demos/links.py                     |   0
+ {demos/gtk-demo => demo}/demos/menus.py                     |   0
+ {demos/gtk-demo => demo}/demos/pickers.py                   |   0
+ {demos/gtk-demo => demo}/demos/pixbuf.py                    |   0
+ {demos/gtk-demo => demo}/demos/printing.py                  |   0
+ {demos/gtk-demo => demo}/demos/rotatedtext.py               |   0
+ {demos/gtk-demo => demo}/demos/test.py                      |   0
+ {demos/gtk-demo => demo}/gtk-demo.py                        |   0
+ 61 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 1ea36ccfc755693b9ce4cf28be549704bf5370d3
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Wed Dec 6 16:54:54 2017 +0100
+
+    Remove AUTHORS file
+
+    No need to duplicate that information over and over.
+    It's in the README and .doap file still
+
+ AUTHORS     | 11 -----------
+ MANIFEST.in |  1 -
+ README      |  4 ++--
+ 3 files changed, 2 insertions(+), 14 deletions(-)
+
+commit 9462873823a5459276400c0d6cf11e084b681751
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Wed Dec 6 15:55:54 2017 +0100
+
+    Remove pre-commit.hook
+
+    It was obviously not used in some time as the git command doesn't
+    exist anymore.
+    If we ever get per pull/merge request CI we can look into bringing
+    something
+    like this back.
+
+ MANIFEST.in     |  1 -
+ pre-commit.hook | 39 ---------------------------------------
+ 2 files changed, 40 deletions(-)
+
+commit 3e455944f5835c750911d3178a0607201f23f1a8
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Mon Dec 4 15:33:00 2017 +0100
+
+    setup.py: Port to distutils/setuptools
+
+    Instead of wrapping autotools add a proper setuptools based build
+    system.
+    Compared to the autotools one this does not install .pc files
+    or headers
+    and does not allow running tests.
+
+    It uses pkg-config for discovering dependencies and explictely
+    searches
+    for .pc files in the Python prefix so that pycairo installations in a
+    virtualenv are discovered. When using MSVC, pkg-config is skipped and
+    it is assumend that INCLUDE and LIB is properly set up.
+
+    Version information and requirements are parsed from configure.ac,
+    package
+    metadata is parsed from PKG-INFO.in.
+
+    Also adds a "setup.py distcheck" command which makes sure all
+    tracked files
+    end up in the tarball and that the tarball builds (no tests are
+    run atm).
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=789211
+
+ .gitignore   |   1 +
+ MANIFEST.in  |  20 +++
+ Makefile.am  |   3 +-
+ PKG-INFO.in  |   8 +-
+ configure.ac |   3 +-
+ setup.py     | 409
+ +++++++++++++++++++++++++++++++++++++++++++++++------------
+ 6 files changed, 359 insertions(+), 85 deletions(-)
+
+commit 58f677bfaa0f117465a9e2146c5d83768b5a76ac
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Fri Nov 24 13:11:26 2017 +0100
+
+    Install a default SIGINT handler for functions which start an
+    event loop
+
+    Currently ctrl+c on a program blocked on Gtk.main() will raise
+    an exception
+    but not return control. While it's easy to set up the proper signal
+    handling and
+    stop the event loop or execute some other application shutdown code
+    it's nice to have a good default behaviour for small
+    prototypes/examples
+    or when testing some code in an interactive console.
+
+    This adds a context manager which registers a SIGINT handler only
+    in case
+    the default Python signal handler is active and restores the
+    original handle
+    afterwards. Since signal handlers registered through
+    g_unix_signal_add()
+    are not detected by Python's signal module we use PyOS_getsig()
+    through ctypes
+    to detect if the signal handler is changed from outside.
+
+    In case of nested event loops, all of them will be aborted.
+    In case an event loop is started in a thread, nothing will happen.
+
+    The context manager is used in the overrides for Gtk.main(),
+    Gtk.Dialog.run(),
+    Gio.Application.run() and GLib.MainLoop.run()
+
+    This also fixes GLib.MainLoop.run() replacing a non-default signal
+    handler
+    and not restoring the default one:
+        https://bugzilla.gnome.org/show_bug.cgi?id=698623
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=622084
+
+ gi/_ossighelper.py   | 115
+ +++++++++++++++++++++++++++++++++++++++++++++++++++
+ gi/overrides/GLib.py |  31 +++-----------
+ gi/overrides/Gio.py  |   7 ++--
+ gi/overrides/Gtk.py  |  12 +++---
+ tests/test_ossig.py  |  73 +++++++++++++++++++++++++++++++-
+ 5 files changed, 203 insertions(+), 35 deletions(-)
+
+commit a321f6e9d8f5b8e779892eab4ce759b60ff98e39
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Fri Nov 17 20:05:24 2017 +0100
+
+    Make Python OS signal handlers run when an event loop is idling
+
+    When Python receives a signal such as SIGINT it sets a flag and
+    will execute
+    the registered signal handler on the next call to
+    PyErr_CheckSignals().
+    In case the main thread is blocked by an idling event loop (say
+    Gtk.main()
+    or Gtk.Dialog.run()) the check never happens and the signal handler
+    will not get executed.
+
+    To work around the issue use signal.set_wakeup_fd() to wake up
+    the active
+    event loop when a signal is received, which will invoke a Python
+    callback
+    which will lead to the signal handler being executed.
+
+    This patch enables it in overrides for Gtk.main(), Gtk.Dialog.run(),
+    Gio.Application.run() and GLib.MainLoop.run().
+
+    Works on Unix, and on Windows with Python 3.5+.
+
+    With this fix in place it is possible to have a cross platform way to
+    react to SIGINT (GLib.unix_signal_add() worked, but not on Windows),
+    for example:
+
+        signal.signal(signal.SIGINT, lambda *args: Gtk.main_quit())
+        Gtk.main()
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=622084
+
+ Makefile.am          |   3 +-
+ gi/_ossighelper.py   | 137
+ +++++++++++++++++++++++++++++++++++++++++++++++++++
+ gi/overrides/GLib.py |   4 +-
+ gi/overrides/Gio.py  |  12 +++++
+ gi/overrides/Gtk.py  |  14 ++++++
+ tests/Makefile.am    |   1 +
+ tests/test_ossig.py  | 102 ++++++++++++++++++++++++++++++++++++++
+ 7 files changed, 271 insertions(+), 2 deletions(-)
+
+commit 46a9dade170127006df98d44b1a9fb2035ada86b
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Fri Nov 24 17:40:11 2017 +0100
+
+    Drop Python 3.3 support
+
+    It's EOL and not used much (https://hynek.me/articles/python3-2016/)
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=790787
+
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit bd165405754ba44dea12fd3f31b841b5c8ba0f1a
+Author: Sander Sweers <infirit@gmail.com>
+Date:   Sun Aug 20 22:44:15 2017 +0200
+
+    Drop set_value usage in Gtk.List/TreeStore.set override
+
+    this causes multiple updates to the store each emitting a signal.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=790346
+
+ gi/overrides/Gtk.py         | 48
+ ++++++++++++++++++++++++---------------------
+ tests/test_overrides_gtk.py | 12 ++++++++++++
+ 2 files changed, 38 insertions(+), 22 deletions(-)
+
+commit 5f63b8c626eb7f27de346dac2b66f07794e61b07
 Author: Christoph Reiter <creiter@src.gnome.org>
 Date:   Thu Oct 26 17:24:02 2017 +0200
 
@@ -31,7 +2580,7 @@ Date:   Thu Oct 26 17:24:02 2017 +0200
  tests/test_signal.py  | 29 ++++++++++++++++++++++++++++-
  2 files changed, 32 insertions(+), 3 deletions(-)
 
-commit b4bf1b9d936e021b1645c069c2e0a3062cfab62b
+commit f13b0d6e0d97e21aa2a4553a036362dec9d0c4cb
 Author: Daniel Colascione <dancol@dancol.org>
 Date:   Tue Oct 24 14:42:43 2017 +0200
 
@@ -62,7 +2611,7 @@ Date:   Tue Oct 24 14:42:43 2017 +0200
  gi/gimodule.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-commit 1136f385d6080297bd57715b749c67f5e7208ba2
+commit 280e80c54e6f2c91638195b92736f5c2b34bbbbd
 Author: Christoph Reiter <creiter@src.gnome.org>
 Date:   Thu Oct 26 09:35:09 2017 +0200
 
@@ -77,7 +2626,7 @@ Date:   Thu Oct 26 09:35:09 2017 +0200
  tests/test_gi.py | 1 -
  1 file changed, 1 deletion(-)
 
-commit a37687d3d8bdc42aea63e551401e6686c926c556
+commit 5f41add624990255dfebf2d726af946599f7bcf6
 Author: Christoph Reiter <creiter@src.gnome.org>
 Date:   Mon Oct 23 12:41:45 2017 +0200
 
@@ -94,7 +2643,7 @@ Date:   Mon Oct 23 12:41:45 2017 +0200
  tests/test_gi.py                |  5 +++++
  3 files changed, 45 insertions(+)
 
-commit 44a852191a67bc7ef76202412a0102de46eb26f0
+commit 0695d234b0e3e9b0f15a7548816c5c4c96a41ab5
 Author: Philippe Renon <philippe_renon@yahoo.fr>
 Date:   Thu Aug 31 16:39:08 2017 +0200
 
@@ -109,7 +2658,7 @@ Date:   Thu Aug 31 16:39:08 2017 +0200
  gi/pygi-enum-marshal.c | 8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
 
-commit fa4330df4e26bb9f77a5cf081d3cc40c342709b9
+commit 1bf7d2cddcd24f619a268d0af85d7919d72bacba
 Author: Christoph Reiter <creiter@src.gnome.org>
 Date:   Sun Oct 22 17:59:17 2017 +0200
 
@@ -126,7 +2675,16 @@ Date:   Sun Oct 22 17:59:17 2017 +0200
  tests/test_gi.py                |  6 ++++++
  4 files changed, 32 insertions(+)
 
-commit 5f0f3b330cfa1eb11db4f376d141445847cb9d16
+commit e502d0097f28e6c65d3d5120230fb428aabbc083
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Fri Oct 20 09:48:07 2017 +0200
+
+    pygobject.doap: Add myself as maintainer
+
+ pygobject.doap | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+commit 37db51220668238e4870b7220b496803d942691b
 Author: James Clarke <jrtc27@jrtc27.com>
 Date:   Fri Oct 13 18:04:45 2017 +0100
 
@@ -146,7 +2704,7 @@ Date:   Fri Oct 13 18:04:45 2017 +0100
  gi/pygi-closure.c | 40 +++++++++++++++++++++-------------------
  1 file changed, 21 insertions(+), 19 deletions(-)
 
-commit d831decad9e8fdb449518997dee1a5eaa21e0313
+commit 3c791a5d4b17d647a531de04469d04f77fce0548
 Author: Christoph Reiter <creiter@src.gnome.org>
 Date:   Fri Oct 13 19:24:01 2017 +0200
 
@@ -161,11 +2719,58 @@ Date:   Fri Oct 13 19:24:01 2017 +0200
  Makefile.am | 7 +++++++
  1 file changed, 7 insertions(+)
 
-commit 5b61ac3f2a66d93110642f43bec4f2a4e656681a
+commit c4995493c233225b1fa5a3e5406e78d02e3b86e6
 Author: Christoph Reiter <creiter@src.gnome.org>
-Date:   Thu Oct 12 18:58:04 2017 +0200
+Date:   Fri Oct 13 17:22:02 2017 +0200
 
-    configure.ac: version bump to 3.26.1
+    Drop pygobject-3.0-uninstalled.pc file
+
+    Like glib/gtk+ did in 2011:
+    https://git.gnome.org/browse/glib/commit/?id=306aa62ea5fa4d3a57bca419afcc159f9509b476
+
+ configure.ac                    |  1 -
+ pygobject-3.0-uninstalled.pc.in | 12 ------------
+ 2 files changed, 13 deletions(-)
+
+commit 3363049be9d8cd277b33127427694588598aa6dd
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Fri Oct 13 16:08:01 2017 +0200
+
+    tests: Windows fix
+
+    some fallout from fd5f2a09ce48329d2df191eca9a0cea926ddfb5b
+
+ tests/test_everything.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit fd5f2a09ce48329d2df191eca9a0cea926ddfb5b
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Fri Oct 13 15:29:40 2017 +0200
+
+    tests: some more C locale fixes
+
+    see f40df0a09803ec9c729d842f1f83c6d56aebac22
+
+ tests/test_everything.py | 8 +++++++-
+ tests/test_gi.py         | 6 ++++--
+ 2 files changed, 11 insertions(+), 3 deletions(-)
+
+commit f40df0a09803ec9c729d842f1f83c6d56aebac22
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Fri Oct 13 14:32:44 2017 +0200
+
+    tests: Make the test suite pass with the C locale
+
+    Some filename tests assumed a Unicode locale, skip those.
+
+ tests/test_gi.py | 29 +++++++++++++++++++++++++----
+ 1 file changed, 25 insertions(+), 4 deletions(-)
+
+commit 857fb023886476988d99d35c92894cdbc1bbeab2
+Author: Christoph Reiter <creiter@src.gnome.org>
+Date:   Tue Sep 12 08:35:12 2017 +0200
+
+    configure.ac: post-release version bump to 3.27.0
 
  configure.ac | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
