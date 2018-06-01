@@ -1,3 +1,73 @@
+commit 8c84ef95c9a76de9189feedfebc8963db29d6bf0
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Thu May 31 16:55:56 2018 +0200
+
+    release
+
+ NEWS | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+commit 2783b342dea7413e674811700c935ee98635ee38
+Author: Philip Withnall <withnall@endlessm.com>
+Date:   Fri May 18 15:16:45 2018 +0100
+
+    gi/pygi-argument: Squash critical warning when using array as
+    hash value
+
+    Using a GPtrArray as the value type of a GHashTable currently
+    produces a
+    warning:
+       Unsupported type array
+    for example when calling a function whose return type is annotated as:
+       (transfer container) (element-type filename GPtrArray<SomeObject>)
+
+    Since we don’t treat objects (GI_TYPE_TAG_INTERFACE) specially when
+    marshalling to/from GHashTable, we shouldn’t need to treat arrays
+    specially either. Handle the case explicitly.
+
+    Signed-off-by: Philip Withnall <withnall@endlessm.com>
+
+ gi/pygi-argument.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+commit 211dd45cc885969d6525cd0ef609bd3c4e997812
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Fri May 11 15:04:50 2018 +0200
+
+    ossig: Don't leak the callbacks in case the event loops are not
+    stopped through SIGINT. Fixes #219
+
+    We didn't remove them if the event loops returned normally.
+    This also fixes a small race where a SIGINT gets ignored right after
+    the yield check and before
+    the old handler is reinstated. Check after the signal handler is
+    switched back instead.
+
+    This resulted in GLib.MainLoop and Gio.Aplication instances leaking.
+
+ gi/_ossighelper.py | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
+
+commit 23f9f43f93befd177fb48c67e2d7da5f08a2b490
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Sun Apr 1 11:15:18 2018 +0200
+
+    ossig: pass the signal number and frame to default_int_handler()
+
+    PyPy doesn't have default parameter values there.
+
+ gi/_ossighelper.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit b7bb1a83280012035b7036a7d938d8949b673aa8
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Tue Mar 27 22:56:32 2018 +0200
+
+    version bump
+
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
 commit 3ba1f36ebd63ce4477fab1c0d1c9d7fc817f19a8
 Author: Christoph Reiter <reiter.christoph@gmail.com>
 Date:   Tue Mar 27 22:48:17 2018 +0200
