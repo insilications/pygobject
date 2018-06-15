@@ -21,7 +21,7 @@ BuildRequires : pkgconfig(glib-2.0)
 BuildRequires : pkgconfig(gobject-introspection-1.0)
 BuildRequires : pkgconfig(libffi)
 BuildRequires : pkgconfig(pycairo)
-BuildRequires : python-dev
+
 BuildRequires : python3-dev
 BuildRequires : setuptools
 
