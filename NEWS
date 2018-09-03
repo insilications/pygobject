@@ -1,3 +1,36 @@
+3.30.0 - 2018-08-31
+-------------------
+
+* Various test suite fixes to get things to pass with Ubuntu 18.10.
+
+
+3.29.3 - 2018-08-16
+-------------------
+
+* meson: Support building pycairo as a subproject. :mr:`76`
+* meson: Declare_dependency for use by potential superprojects
+  (:user:`Mathieu Duponchelle <mathieudu>`)
+* meson: Update glib wrap file. :mr:`80` (:user:`Carlos Soriano <csoriano>`)
+* meson: Fix the Python 2 build not not use the system pycairo extension when
+  running tests. :issue:`242`
+* pygi-convert.sh: Various fixes and updates. :mr:`77` :mr:`78`
+  (:user:`Sander Sweers <infirit>`)
+* Gtk.Template: Fix instantiation error when using the new code with older
+  PyGObject. :mr:`79` (:user:`Kai Willadsen <kaiw>`)
+* Gtk.Template: Don't error out when loading a resource that is only available
+  in an overlay. :issue:`230`
+* Fix various crashes when running against a debug Python 3.7 build. :mr:`82`
+  (:user:`Simon McVittie <smcv>`)
+* overrides: Allow calling GObject.Binding.unbind() multiple times with
+  GLib 2.58+. :issue:`240`
+* overrides: Gio.ListStore overrides use splice() when adding/removing many
+  items with GLib 2.58+. :issue:`115` :mr:`83`
+* Work around pylint reporting bogus warnings regarding a missing self
+  argument for normal functions. :issue:`217`
+* Add override for GdkPixbuf.Pixbuf.new_from_data() to wrap new_from_bytes()
+  to work around a use after free. :issue:`225` :mr:`74`
+
+
 3.28.3 - 2018-05-31
 -------------------
 
@@ -5,6 +38,72 @@
   :issue:`219`
 * Squash critical warning when using array as hash value
   (:user:`Philip Withnall <pwithnall>`)
+
+
+3.29.2 - 2018-05-16
+-------------------
+
+* Add a meson build system. :issue:`165`
+  (:user:`Mathieu Duponchelle<mathieudu>`)
+* Gtk.Template: Allow marking children as "internal-child". :mr:`58`
+* Gio.ListModel: implement most of the mutable sequence protocol.
+  :issue:`115` :mr:`59`
+* Gio.Settings: implement __iter__.
+* Gio.Settings: support range types in __setitem__. :issue:`134`
+* Add overrides for Gio.ListStore.sort and Gio.ListStore.insert_sorted.
+  :issue:`130`
+* Make Gtk.Widget.freeze_child_notify a context manager. :issue:`45`
+* OptionParser.parse_args: return leftover arguments. :issue:`200`
+* Release the GIL when emitting a signal. :mr:`66`
+  (John Bassett <john.bassett@pexip.com>)
+* Add ActionMap and ActionMap.add_action_entries() to overrides.
+  :issue:`29` :mr:`65` (:user:`yangfl`)
+* importer: raise ImportError in load_module() and not find_module().
+  :issue:`213`
+* Don't wrap GValue in GValue when creating GValueArray. :mr:`66`
+  (Stian Selnes <stian@pexip.com>)
+* ossig: Don't leak the callbacks in case the event loops are not stopped
+  through SIGINT. :issue:`219` :mr:`72`
+* Various fixes (Havard Graff <havard.graff@gmail.com>)
+* Destroy custom GLib.Source instances when they get freed. :issue:`193`
+* Revert "Add PEP518/pyproject.toml file", fixes installation with pip 10,
+  see https://github.com/pypa/pip/issues/5244
+* Various fixes/improvements for PyPy.
+* Don't crash on multiple calls to GObject.Value.__del__. :mr:`66`
+
+Documentation:
+  * Added StackOverflow (with PyGObject tag) as an contact resource.
+    (:user:`buhtz`)
+  * Add introduction to handling GLib.Error. :mr:`68`
+    (:user:`Kai Willadsen <kaiw>`)
+  * Add pycairo requires for development setup. :mr:`70`
+    (:user:`Kai Willadsen <kaiw>`)
+
+
+3.29.1 - 2018-04-15
+-------------------
+
+* Support for `PyPy <https://pypy.org/>`__ and PyPy3. :issue:`180`
+* cairo: support :class:`cairo.Matrix` conversion. :issue:`16`
+* Speed up repeated closure creation by caching the closure cache in the
+  argument cache :issue:`103` (:user:`Garrett Regier <gregier>`\,
+  :user:`Christoph Reiter <creiter>`)
+* setup.py: make setuptools/pkg_resources optional. :issue:`186`
+* setup.py: print installation instructions in case a dependency is missing.
+  :issue:`194`
+* Remove autotools build system.
+* overrides: Make :meth:`Gtk.ListStore.insert_before`,
+  :meth:`Gtk.ListStore.insert_after`, :meth:`Gtk.TreeStore.insert_before` and
+  :meth:`Gtk.TreeStore.insert_after` atomic.
+* Make :class:`GLib.Error` picklable. :issue:`145`
+* Add basic support for template based widgets through ``Gtk.Template``.
+  :issue:`52`
+* Various documentation improvements. :mr:`29` (:user:`Dan Yeaw <danyeaw>`)
+* Add PEP518/pyproject.toml file. :mr:`44` (:user:`James Tocknell <aragilar>`)
+* Avoid truncating value returned from g_value_info_get_value. :mr:`51`
+  (:user:`Tomasz Miąsko <tmiasko>`)
+* Fix typo in BoundSignal disconnect. :mr:`55`
+  (:user:`Vladislav Glinsky <cl0ne>`)
 
 
 3.28.2 - 2018-03-27
