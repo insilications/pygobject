@@ -4,7 +4,7 @@
 #
 Name     : pygobject
 Version  : 3.30.1
-Release  : 26
+Release  : 27
 URL      : https://download.gnome.org/sources/pygobject/3.30/pygobject-3.30.1.tar.xz
 Source0  : https://download.gnome.org/sources/pygobject/3.30/pygobject-3.30.1.tar.xz
 Summary  : Python bindings for GObject Introspection
