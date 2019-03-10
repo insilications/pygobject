@@ -1,8 +1,47 @@
+3.32.0 - 2019-03-10
+-------------------
+
+* No changes since 3.31.4
+
+
+3.31.4 - 2019-03-07
+-------------------
+
+* docs: document GObject.Object.weak_ref() :issue:`245`
+* cairo: Add cairo pattern foreign struct support :mr:`111` (:user:`Renato Florentino Garcia <renato_garcia>`)
+* cairo: Add cairo_matrix_t converter to GValue :mr:`112` (:user:`Renato Florentino Garcia <renato_garcia>`)
+
+
+3.31.3 - 2019-02-02
+-------------------
+
+* Speed up destruction of boxed types :mr:`106` and GObject.Value.set_value() calls.
+  This makes appending to a Gtk.TreeModel nearly twice as fast for example :issue:`46`, :issue:`218`
+* Allow passing None for boolean parameters
+* meson: Install .egg-info directory to arch'd dir. :mr:`109` (:user:`Elliott Sales de Andrade <QuLogic>`)
+* gtk overrides: raise in case Gtk.Window is instantiated after gtk_init failed :issue:`298`
+* gio overrides: Warn when creating various dbus types without a constructor :issue:`15`
+* tests: Fix tests with glib 2.59.x :issue:`287`
+* tests: fix test_atoms failing in some environments :issue:`300`
+
+
+3.31.2 - 2018-12-15
+-------------------
+
+* Changes included in 3.30.4
+* GLib.Variant.keys: correctly raise TypeError for non-dict types
+* GLib.Variant: implement __bool__ for maybe types
+* cairo: Fix GValue converters in case of NULL
+* setup.py: Print an install command hint when pkg-config is missing
+* pygi-info: wrap g_union_info_get_alignment()
+  :mr:`105` (:user:`Tomasz Miąsko <tmiasko>`)
+
+
 3.30.4 - 2018-11-30
 -------------------
 
 * gtk overrides: Fix rows getting inserted on the wrong level with
-  TreeStore.insert_before/inster_after if parent=None.
+  TreeStore.insert_before/insert_after if parent=None.
   :issue:`281` (3.30 regression, thanks to :user:`Cian Wilson <cianwilson>`
   for the report)
 
@@ -16,6 +55,21 @@
 * Fix GObject attribute access during instance init which can lead to errors
   with __getattr__ implementations of subclasses. This lead to criticals when
   instantiating Gio.DBusProxy. :issue:`267`
+
+
+3.31.1 - 2018-11-17
+-------------------
+
+* Changes included in 3.30.2
+* overrides: add Pango.Layout.set_text() override. :issue:`259` :mr:`89`
+* docs: link updates :mr:`93` (:user:`tijder`)
+* overrides: Use functools.wraps instead of custom version.
+  :issue:`271` :mr:`95` (:user:`Kai Willadsen <kaiw>`)
+* tests: Make tests run with current gtk4 master
+* Add (again) a pyproject.toml for specifying the pycairo build dep
+  (requires pip >=18.0)
+* setup.py: Make it possible to build without cairo support through the
+  PYGOBJECT_WITHOUT_PYCAIRO env var. :issue:`250`
 
 
 3.30.2 - 2018-11-11

@@ -1,5 +1,10 @@
 # This file contains recursive sources that require this package
 NetworkManager
 fwupd
+gexiv2
+ibus-libpinyin
+libgit2-glib
+libsecret
 orca
 pygtk
+rhythmbox
