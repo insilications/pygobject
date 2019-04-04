@@ -4,7 +4,7 @@
 #
 Name     : pygobject
 Version  : 3.32.0
-Release  : 31
+Release  : 32
 URL      : https://download.gnome.org/sources/pygobject/3.32/pygobject-3.32.0.tar.xz
 Source0  : https://download.gnome.org/sources/pygobject/3.32/pygobject-3.32.0.tar.xz
 Summary  : Python bindings for GObject Introspection
@@ -17,7 +17,7 @@ Requires: pycairo
 BuildRequires : buildreq-distutils3
 BuildRequires : buildreq-gnome
 BuildRequires : buildreq-meson
-BuildRequires : pkgconfig(pycairo)
+BuildRequires : pkgconfig(py3cairo)
 
 %description
 .. image:: https://pygobject.readthedocs.io/en/latest/_images/pygobject.svg
@@ -69,8 +69,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1552259458
-export LDFLAGS="${LDFLAGS} -fno-lto"
+export SOURCE_DATE_EPOCH=1554402015
 CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --prefix /usr --buildtype=plain   builddir
 ninja -v -C builddir
 

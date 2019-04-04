@@ -4,6 +4,8 @@ fwupd
 gexiv2
 ibus-libpinyin
 libgit2-glib
+libhandy
+libmodulemd
 libsecret
 orca
 pygtk
