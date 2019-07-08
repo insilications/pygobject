@@ -2,11 +2,13 @@
 NetworkManager
 fwupd
 gexiv2
+ibus
 ibus-libpinyin
 libgit2-glib
 libhandy
 libmodulemd
 libsecret
+lutris
 orca
 pygtk
 rhythmbox
