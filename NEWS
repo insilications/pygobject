@@ -1,9 +1,33 @@
+3.34.0 - 2019-09-09
+-------------------
+
+* No changes since 3.33.1
+
+
+3.33.1 - 2019-08-18
+-------------------
+
+* Make GLib.Variant.unpack a bit less costly :mr:`121` (:user:`Mathieu Bridon <mbridon>`)
+* pygobject: ignore GParameter deprecations :mr:`122` (:user:`Christian Hergert <chergert>`)
+* pygobject-object: fix refcount of floating return values :mr:`120` (:user:`Mathieu Duponchelle <mathieudu>`)
+* pygi-info: remove some dead code :issue:`303`
+
+
 3.32.2 - 2019-06-23
 -------------------
 
 * Python 3.8b1 compatibility fixes
 * tests: fix a test error when run under wayland
 * setup.py: specify python_requires
+
+
+3.30.5 - 2019-06-16
+-------------------
+
+* tests/gimarshallingtestsextra.c/h: relicense to LGPLv2.1+ :issue:`320`
+* Fix a crash when marshalling a GError to Python fails :mr:`115`
+* Fix leak of transfer-full/container C arrays :mr:`117` (:user:`Tomasz Miąsko <tmiasko>`)
+* Python 3.8b1 compatibility fixes
 
 
 3.32.1 - 2019-04-20
