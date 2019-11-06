@@ -4,7 +4,7 @@
 #
 Name     : pygobject
 Version  : 3.34.0
-Release  : 38
+Release  : 41
 URL      : https://download.gnome.org/sources/pygobject/3.34/pygobject-3.34.0.tar.xz
 Source0  : https://download.gnome.org/sources/pygobject/3.34/pygobject-3.34.0.tar.xz
 Summary  : Python bindings for GObject Introspection
@@ -30,7 +30,6 @@ BuildRequires : pycairo
 Summary: dev components for the pygobject package.
 Group: Development
 Provides: pygobject-devel = %{version}-%{release}
-Requires: pygobject = %{version}-%{release}
 Requires: pygobject = %{version}-%{release}
 
 %description dev
@@ -65,14 +64,14 @@ python3 components for the pygobject package.
 
 %prep
 %setup -q -n pygobject-3.34.0
+cd %{_builddir}/pygobject-3.34.0
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1568077121
-# -Werror is for werrorists
+export SOURCE_DATE_EPOCH=1573763897
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -86,8 +85,8 @@ ninja -v -C builddir
 
 %install
 mkdir -p %{buildroot}/usr/share/package-licenses/pygobject
-cp COPYING %{buildroot}/usr/share/package-licenses/pygobject/COPYING
-cp docs/images/LICENSE %{buildroot}/usr/share/package-licenses/pygobject/docs_images_LICENSE
+cp %{_builddir}/pygobject-3.34.0/COPYING %{buildroot}/usr/share/package-licenses/pygobject/597bf5f9c0904bd6c48ac3a3527685818d11246d
+cp %{_builddir}/pygobject-3.34.0/docs/images/LICENSE %{buildroot}/usr/share/package-licenses/pygobject/37e8ad1b8f297bce2b0974196aa6998cc7f8e418
 DESTDIR=%{buildroot} ninja -C builddir install
 
 %files
@@ -100,8 +99,8 @@ DESTDIR=%{buildroot} ninja -C builddir install
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/pygobject/COPYING
-/usr/share/package-licenses/pygobject/docs_images_LICENSE
+/usr/share/package-licenses/pygobject/37e8ad1b8f297bce2b0974196aa6998cc7f8e418
+/usr/share/package-licenses/pygobject/597bf5f9c0904bd6c48ac3a3527685818d11246d
 
 %files python
 %defattr(-,root,root,-)
