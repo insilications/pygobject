@@ -4,7 +4,7 @@
 #
 Name     : pygobject
 Version  : 3.34.0
-Release  : 43
+Release  : 44
 URL      : https://download.gnome.org/sources/pygobject/3.34/pygobject-3.34.0.tar.xz
 Source0  : https://download.gnome.org/sources/pygobject/3.34/pygobject-3.34.0.tar.xz
 Summary  : Python bindings for GObject Introspection
@@ -30,6 +30,7 @@ BuildRequires : pycairo
 Summary: dev components for the pygobject package.
 Group: Development
 Provides: pygobject-devel = %{version}-%{release}
+Requires: pygobject = %{version}-%{release}
 Requires: pygobject = %{version}-%{release}
 
 %description dev
@@ -71,7 +72,8 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1573763897
+export SOURCE_DATE_EPOCH=1583207042
+# -Werror is for werrorists
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
