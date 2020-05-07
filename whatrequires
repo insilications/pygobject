@@ -3,10 +3,8 @@ NetworkManager
 dnf
 firewalld
 fwupd
-gexiv2
 gnome-music
 gnome-tweaks
-ibus-libpinyin
 libgit2-glib
 libhandy
 libmodulemd
