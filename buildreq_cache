@@ -1,2 +1,3 @@
 3.38.0
 pkgconfig(py3cairo)
+python3-dev
